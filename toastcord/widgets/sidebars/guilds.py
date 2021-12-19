@@ -3,19 +3,16 @@ from functools import lru_cache
 from typing import Union
 
 from textual import events
-from textual.widgets import (
-    TreeClick, TreeControl, TreeNode, NodeID
-)
-
 from textual.reactive import Reactive
+from textual.widgets import TreeClick, TreeControl, TreeNode, NodeID
 
 from rich.text import Text
 from rich.console import RenderableType
 
-from toastcord import client
 
 from ..click import ChannelClick, GuildClick
 
+from toastcord import client
 from toastcord.api.types.channels import MessageChannel, GuildChannel
 from toastcord.api.types.user import User
 from toastcord.api.types.guild import Guild
@@ -28,11 +25,14 @@ class GuildsSidebar(TreeControl):
 
         self.home_channel = MessageChannel(
             id=1337,
-            recipient=User(id=1337, username="test", discriminator=1337),
+            recipient=User(id=1337, username="null", discriminator=1337),
             messages=[]
         )
 
-        super().__init__("👾 Guilds", name=name, data=self.home_channel)
+        super().__init__(
+            "👾 Guilds",
+            name=name, data=self.home_channel
+        )
 
         self.root.tree.guide_style = "black"
 
@@ -112,10 +112,12 @@ class GuildsSidebar(TreeControl):
         self, message: TreeClick[Union[GuildChannel, Guild]]
     ) -> None:
         """ Handle click """
+
         if message.node.data.id == 1337:
             return
 
         if isinstance(message.node.data, Guild):
+
             await message.node.data.load_channels()
 
             ids = (node.data.id for node in message.node.children)

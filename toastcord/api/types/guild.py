@@ -1,7 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Union
-
-from toastcord.api.types.user import User
+from typing import List
 
 from .channels import GuildChannel
 from ..http import HTTPClient

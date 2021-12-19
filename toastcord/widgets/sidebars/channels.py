@@ -25,12 +25,13 @@ class ChannelsSidebar(TreeControl):
 
         self.home_channel = MessageChannel(
             id=1337,
-            recipient=User(id=1337, username="test", discriminator=1337),
+            recipient=User(id=1337, username="null", discriminator=1337),
             messages=[]
         )
 
         super().__init__(
-            "👾 Direct messages", name=name, data=self.home_channel
+            "👾 Direct messages",
+            name=name, data=self.home_channel
         )
 
         self.root.tree.guide_style = "black"
