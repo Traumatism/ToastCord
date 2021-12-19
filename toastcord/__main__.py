@@ -19,26 +19,11 @@ from textual.widget import Widget
 from textual.app import App
 from textual import events
 
-from typing import Union
+from . import WELCOME_SCREEN
 
-from toastcord.api import MessageChannel, Client, User
-
-WELCOME_SCREEN = """
-
-[cyan]   ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/cyan]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]
-[cyan]    ║ ║ ║╠═╣╚═╗ ║[/cyan]   │  │ │├┬┘ ││[blue bold] ##[bold white]@[/bold white]#[bold white]@[/bold white]##[/blue bold]
-[cyan]    ╩ ╚═╝╩ ╩╚═╝ ╩[/cyan]   └─┘└─┘┴└┘└┴┘[blue bold]  ## ##[/blue bold]
-
-    Developed by toast#3108
-
-    https://github.com/traumatism/ToastCord
-
-    https://t.me/toastakerman
-    https://github.com/traumatism
-    https://twitter.com/toastakerman
-"""
-
-selected_channel: Union[MessageChannel, None] = None
+from .api import Client
+from .api.types.user import User
+from .api.types.channels import MessageChannel
 
 client: Client = Client()
 
