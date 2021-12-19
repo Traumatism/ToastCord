@@ -48,10 +48,7 @@ class ChannelsSidebar(TreeControl):
 
     async def watch_hover_node(self, hover_node: NodeID) -> None:
         for node in self.nodes.values():
-
-            node.tree.guide_style = (
-                "bold not dim red" if node.id == hover_node else "black"
-            )
+            node.tree.guide_style = "black"
 
         self.refresh(layout=True)
 
@@ -82,8 +79,6 @@ class ChannelsSidebar(TreeControl):
         icon = ""
 
         if is_hover:
-            icon = "👉 "
-            label.stylize("underline")
             label.stylize("bold green")
         else:
             label.stylize("dim green")
@@ -96,6 +91,7 @@ class ChannelsSidebar(TreeControl):
 
         icon_label = Text(icon, no_wrap=True, overflow="ellipsis") + label
         icon_label.apply_meta(meta)
+
         return icon_label
 
     async def on_mount(self, event: events.Mount) -> None:
@@ -114,4 +110,9 @@ class ChannelsSidebar(TreeControl):
         self.refresh(layout=True)
 
     async def handle_tree_click(self, message: TreeClick[MessageChannel]):
+
+        if message.node.data.id == 1337:
+            return
+
+        await message.node.data.load_messages()
         await self.emit(ChannelClick(self, message.node.data))

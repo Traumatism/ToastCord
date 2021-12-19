@@ -1,5 +1,5 @@
-from textual.app import App
 from textual.widgets import ScrollView
+from textual.app import App
 
 from rich.panel import Panel
 
@@ -14,7 +14,7 @@ class MainWindow(App):
     """ Main TUI window """
 
     async def on_mount(self) -> None:
-        self.body = ScrollView()
+        self.body = ScrollView(Panel(WELCOME_SCREEN))
 
         await self.view.dock(
             ScrollView(ChannelsSidebar()), ScrollView(GuildsSidebar()),
@@ -24,9 +24,6 @@ class MainWindow(App):
         await self.view.dock(self.body, edge="top")
 
     async def handle_channel_click(self, message: ChannelClick) -> None:
-        if message.channel.id == 1337:
-            await self.body.update(WELCOME_SCREEN)
-            return
 
         await self.body.update("Loading messages...")
 
@@ -34,12 +31,12 @@ class MainWindow(App):
 
         text = ""
 
-        for x in message.channel.messages.__reversed__():
-            style = "dim" if x.author == client.user else "bold"
+        for _message in message.channel.messages:
+            style = "dim" if _message.author == client.user else "bold"
 
             text += f"[{style}]"
-            text += f'[white]{x.author}[/white]: '
-            text += f"[green]{x.content}[/green]"
+            text += f'[white]{_message.author}[/white]: '
+            text += f"[green]{_message.content}[/green]"
             text += f"[/{style}]"
 
             text += "\n\n"

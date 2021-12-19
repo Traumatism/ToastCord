@@ -20,6 +20,9 @@ class Guild:
         response = http_client.get(f"/guilds/{self.id}/channels")
 
         for channel in response:
+            if channel["type"] != 0:
+                continue
+
             self.channels.append(GuildChannel(
                 id=channel["id"], name=channel["name"],
                 messages=[],

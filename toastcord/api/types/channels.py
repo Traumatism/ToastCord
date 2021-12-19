@@ -14,8 +14,10 @@ class Channel:
     id: int
     messages: List[Message]
 
-    async def load_messages(self, limit: int = 25):
+    async def load_messages(self, limit: int = 100):
         """ Load channel messages """
+        self.messages = []
+
         response = http_client.get(
             f"/channels/{self.id}/messages?limit={limit}"
         )

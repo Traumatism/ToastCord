@@ -49,10 +49,7 @@ class GuildsSidebar(TreeControl):
 
     async def watch_hover_node(self, hover_node: NodeID) -> None:
         for node in self.nodes.values():
-
-            node.tree.guide_style = (
-                "bold not dim red" if node.id == hover_node else "black"
-            )
+            node.tree.guide_style = "black"
 
         self.refresh(layout=True)
 
@@ -83,26 +80,23 @@ class GuildsSidebar(TreeControl):
         icon = ""
 
         if is_hover:
-            icon = "👉 "
-            label.stylize("underline")
             label.stylize("bold green")
         else:
             label.stylize("dim green")
-
-        if label.plain.startswith("."):
-            label.stylize("dim")
 
         if is_cursor and has_focus:
             label.stylize("reverse")
 
         icon_label = Text(icon, no_wrap=True, overflow="ellipsis") + label
         icon_label.apply_meta(meta)
+
         return icon_label
 
     async def on_mount(self, event: events.Mount) -> None:
         await self.load_guilds(self.root)
 
     async def load_guilds(self, node: TreeNode[Guild]):
+        """ Load guilds inside the tree """
         guilds = client.guilds
 
         for entry in guilds:
@@ -117,22 +111,22 @@ class GuildsSidebar(TreeControl):
     async def handle_tree_click(
         self, message: TreeClick[Union[GuildChannel, Guild]]
     ) -> None:
-        if message.node.expanded is False:
-            if isinstance(message.node.data, Guild):
-                await message.node.data.load_channels()
+        """ Handle click """
+        if message.node.data.id == 1337:
+            return
 
-                ids = (node.data.id for node in message.node.children)
+        if isinstance(message.node.data, Guild):
+            await message.node.data.load_channels()
 
-                for channel in message.node.data.channels:
+            ids = (node.data.id for node in message.node.children)
 
-                    if channel.id not in ids:
-                        await message.node.add(str(channel.name), channel)
+            for channel in message.node.data.channels:
+                if channel.id not in ids:
+                    await message.node.add(str(channel.name), channel)
 
+            if message.node.expanded is False:
                 await message.node.expand()
 
-            else:
-                await self.emit(ChannelClick(self, message.node.data))
+            await self.emit(GuildClick(self, message.node.data))
         else:
-            await message.node.toggle()
-
-        await self.emit(GuildClick(self, message.node.data))
+            await self.emit(ChannelClick(self, message.node.data))
