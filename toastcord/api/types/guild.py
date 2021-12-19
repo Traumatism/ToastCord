@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
+
+from toastcord.api.types.user import User
 
 from .channels import GuildChannel
 from ..http import HTTPClient
@@ -13,6 +15,16 @@ class Guild:
     id: int
     name: str
     channels: List[GuildChannel]
+
+    description: str = ""
+    owner_id: int = 0
+    count: int = 0
+
+    async def load_informations(self):
+        response = http_client.get(f"/guilds/{self.id}")
+
+        self.description = response["description"]
+        self.owner_id = response["owner_id"]
 
     async def load_channels(self):
         """ Load channels """

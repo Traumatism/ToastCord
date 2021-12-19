@@ -1,7 +1,7 @@
 import rich.repr
 
-from textual.message import Message, MessageTarget
 from typing import Union
+from textual.message import Message, MessageTarget
 
 from ..api.types.guild import Guild
 from ..api.types.channels import Channel, GuildChannel

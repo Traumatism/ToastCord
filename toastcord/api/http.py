@@ -16,7 +16,6 @@ TOKEN = arguments.token
 
 class AsyncHTTPClient:
     """ A minimalistic asynchronous HTTP client for the Discord API """
-
     ...
 
 

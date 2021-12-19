@@ -1,13 +1,14 @@
-from textual.widgets import ScrollView
-from textual.app import App
-
 from rich.panel import Panel
 
-from toastcord import WELCOME_SCREEN, client
+from textual.app import App
+from textual.widgets import ScrollView
 
-from .sidebars.channels import ChannelsSidebar
+from toastcord import WELCOME_SCREEN, client
+from toastcord.api.types.channels import GuildChannel
+
+from .click import ChannelClick, GuildClick
 from .sidebars.guilds import GuildsSidebar
-from .click import ChannelClick
+from .sidebars.channels import ChannelsSidebar
 
 
 class MainWindow(App):
@@ -22,6 +23,19 @@ class MainWindow(App):
         )
 
         await self.view.dock(self.body, edge="top")
+
+    async def handle_guild_click(self, message: GuildClick) -> None:
+        if isinstance(message.guild, GuildChannel):
+            return
+
+        await message.guild.load_informations()
+
+        await self.body.update(Panel(
+            f"""Name: {message.guild.name}
+Description: {message.guild.description}
+Owner ID: {message.guild.owner_id}
+Channel count: {len(message.guild.channels)}"""
+        ))
 
     async def handle_channel_click(self, message: ChannelClick) -> None:
 
