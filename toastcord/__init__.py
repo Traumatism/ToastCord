@@ -1,3 +1,9 @@
+
+from .api.client import Client
+
+
+client = Client()
+
 WELCOME_SCREEN = """
 
 [cyan]   ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/cyan]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]

@@ -16,6 +16,7 @@ class Guild:
 
     async def load_channels(self):
         """ Load channels """
+        self.channels = []
         response = http_client.get(f"/guilds/{self.id}/channels")
 
         for channel in response:
@@ -23,3 +24,6 @@ class Guild:
                 id=channel["id"], name=channel["name"],
                 messages=[],
             ))
+
+    def __hash__(self) -> int:
+        return int(self.id)

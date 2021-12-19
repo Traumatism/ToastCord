@@ -43,3 +43,7 @@ class MessageChannel(Channel):
 class GuildChannel(Channel):
     """ A guild channel """
     name: str
+    added: bool = False
+
+    def __hash__(self) -> int:
+        return int(self.id)
