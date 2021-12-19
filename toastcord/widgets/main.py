@@ -1,3 +1,5 @@
+import os
+
 from rich.table import Table
 
 from textual.app import App
@@ -20,6 +22,7 @@ class MainWindow(App):
     async def on_mount(self) -> None:
         panel = get_panel()
         panel.renderable = WELCOME_SCREEN
+        panel.height = os.get_terminal_size().lines - 3
 
         self.body = ScrollView(panel)
 
