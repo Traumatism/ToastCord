@@ -25,7 +25,7 @@ from toastcord.api import MessageChannel, Client, User
 
 WELCOME_SCREEN = """
 
-[cyan]   ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/cyan]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold]
+[cyan]   ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/cyan]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]
 [cyan]    ║ ║ ║╠═╣╚═╗ ║[/cyan]   │  │ │├┬┘ ││[blue bold] ##[bold white]@[/bold white]#[bold white]@[/bold white]##[/blue bold]
 [cyan]    ╩ ╚═╝╩ ╩╚═╝ ╩[/cyan]   └─┘└─┘┴└┘└┴┘[blue bold]  ## ##[/blue bold]
 
