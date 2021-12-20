@@ -2,6 +2,8 @@ from .api.client import Client
 
 client = Client()
 
+version = "1.0.0"
+
 WELCOME_SCREEN = """
 
 [blue]   ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/blue]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]

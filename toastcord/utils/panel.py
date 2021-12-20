@@ -3,8 +3,9 @@ from rich.box import SQUARE
 
 
 def get_panel() -> Panel:
+
     return Panel(
         renderable="",
         box=SQUARE,
-        border_style="cyan",
+        border_style="cyan"
     )

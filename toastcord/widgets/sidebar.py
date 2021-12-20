@@ -18,9 +18,7 @@ from .click import Click
 class Sidebar(TreeControl):
 
     def __init__(self, name: str = None) -> None:
-        super().__init__(
-            "👾 ToastCord", name=name, data=None
-        )
+        super().__init__("👾 ToastCord", name=name, data=None)
 
     has_focus: Reactive[bool] = Reactive(False)
 
