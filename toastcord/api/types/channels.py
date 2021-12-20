@@ -1,9 +1,13 @@
+import re
+
 from dataclasses import dataclass
 from typing import List
 
 from .user import User
 from .message import Message
 from ..http import HTTPClient
+
+PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"
 
 http_client = HTTPClient()
 
@@ -13,6 +17,13 @@ class Channel:
     """ A channel """
     id: int
     messages: List[Message]
+
+    async def send_message(self, message: str):
+        """ Send a message to the user """
+        http_client.post(
+            f"/channels/{self.id}/messages",
+            data={"content": message, "tts": False}
+        )
 
     async def load_messages(self, limit: int = 100):
         """ Load channel messages """
@@ -29,9 +40,18 @@ class Channel:
                 discriminator=message["author"]["discriminator"]
             )
 
+            raw_timestamp = message["timestamp"]
+
+            parsed_timestamp = re.search(PATTERN, raw_timestamp)
+
+            if parsed_timestamp is None:
+                continue
+
             self.messages.append(Message(
                 id=message["id"], author=author,
-                content=message["content"], timestamp=message["timestamp"]
+                content=message["content"],
+                timestamp=parsed_timestamp.group("hour"),
+                date=parsed_timestamp.group("date")
             ))
 
 

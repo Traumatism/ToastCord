@@ -17,3 +17,15 @@ class Click(Message, bubble=True):
     ) -> None:
         self.target = target
         super().__init__(sender)
+
+
+@rich.repr.auto
+class Key(Message, bubble=True):
+    """ Handle key press """
+
+    def __init__(
+        self, sender: MessageTarget,
+        target: str
+    ) -> None:
+        self.target = target
+        super().__init__(sender)

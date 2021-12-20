@@ -1,69 +1,61 @@
-import os
+from rich.columns import Columns
 
 from textual import events
 from textual.app import App
 from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN, client
-
-from toastcord.utils.panel import get_panel
+from toastcord.widgets.click import Key
+from toastcord.widgets.header import Header
+from toastcord.widgets.bottom import Bottom
+from toastcord.widgets.sidebar import Sidebar
 from toastcord.api.types.channels import Channel
-
-from .header import Header
-from .sidebar import Sidebar
+from toastcord.utils.message import render_message
 
 
 class MainWindow(App):
     """ Main TUI window """
 
     async def on_mount(self) -> None:
-        panel = get_panel()
 
-        panel.renderable = WELCOME_SCREEN
-        panel.height = os.get_terminal_size().lines - 3
-
-        self.body = ScrollView(panel)
-
-        panel = get_panel()
-        panel.renderable = "> "
-        panel.height = 5
-
-        self.search = ScrollView(panel)
+        self.body = ScrollView(WELCOME_SCREEN)
 
         await self.view.dock(Header(), edge="top", size=3)
 
         await self.view.dock(
-            ScrollView(Sidebar()),
-            edge="left", name="sidebar", size=30
+            ScrollView(Sidebar()), edge="left", name="sidebar", size=40
         )
+        await self.view.dock(Bottom(), edge="bottom", size=3)
 
         await self.view.dock(self.body, edge="top")
-        await self.view.dock(self.search, edge="top", size=10)
 
     async def on_key(self, event: events.Key) -> None:
-        await self.search.update(event.key)
+        await self.emit(Key(self, event.key))
+
+    async def update_messages(self):
+        if client.selected_channel is None:
+            return
+
+        await self.body.update("Loading messages...")
+
+        await client.selected_channel.load_messages()
+
+        await self.body.update("Rendering messages...")
+
+        columns = (
+            render_message(message)
+            for message in client.selected_channel.messages
+        )
+
+        await self.body.update(Columns(columns, align="left"))
 
     async def handle_click(self, message):
 
-        if isinstance(message.target, Channel):
-            await self.body.update("Loading messages...")
+        if not isinstance(message.target, Channel):
+            return
 
-            await message.target.load_messages()
+        client.selected_channel = message.target
 
-            text = ""
+        await self.body.update("Channel selected!")
 
-            for _message in message.target.messages:
-                style = "dim" if _message.author == client.user else "bold"
-
-                text += f"[{style}]"
-                text += f'[white]{_message.author}[/white]: '
-                text += f"[green]{_message.content}[/green]"
-                text += f"[/{style}]"
-
-                text += "\n\n"
-
-            panel = get_panel()
-            panel.renderable = text
-            panel.height = os.get_terminal_size().lines - 3
-
-            return await self.body.update(panel)
+        await self.update_messages()

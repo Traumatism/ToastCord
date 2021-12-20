@@ -1,9 +1,10 @@
-from typing import Iterable
+from typing import Iterable, Union
+
 from .http import HTTPClient
 
 from .types.user import User
 from .types.guild import Guild
-from .types.channels import MessageChannel
+from .types.channels import MessageChannel, Channel
 
 http_client = HTTPClient()
 
@@ -12,7 +13,7 @@ class Client:
     """ A minimalist Discord API wrapper """
 
     def __init__(self) -> None:
-        ...
+        self.selected_channel: Union[Channel, None] = None
 
     def initalize(self):
         self.user = self.__user

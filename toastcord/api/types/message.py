@@ -10,3 +10,4 @@ class Message:
     author: User
     content: str
     timestamp: str
+    date: str

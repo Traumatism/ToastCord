@@ -1,5 +1,9 @@
 from dataclasses import dataclass
 
+from ..http import HTTPClient
+
+http_client = HTTPClient()
+
 
 @dataclass
 class User:

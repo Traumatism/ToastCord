@@ -10,17 +10,23 @@ from rich.text import Text
 from rich.console import RenderableType
 
 from toastcord import client
+from toastcord.widgets.click import Click
 from toastcord.api.types.guild import Guild
-
-from .click import Click
+from toastcord.utils.panel import get_panel
 
 
 class Sidebar(TreeControl):
 
     def __init__(self, name: str = None) -> None:
         super().__init__("👾 ToastCord", name=name, data=None)
+        self.root.tree.guide_style = "black"
 
     has_focus: Reactive[bool] = Reactive(False)
+
+    def render(self) -> RenderableType:
+        panel = get_panel()
+        panel.renderable = self._tree
+        return panel
 
     def on_focus(self) -> None:
         self.has_focus = True
@@ -73,7 +79,7 @@ class Sidebar(TreeControl):
 
         for direct_message in client.channels:
             await self.root.children[0].add(
-                str(direct_message.recipient),
+                direct_message.recipient.username,
                 data=direct_message
             )
 
@@ -98,7 +104,7 @@ class Sidebar(TreeControl):
 
             for channel in message.node.data.channels:
                 if channel.id not in ids:
-                    await message.node.add(str(channel.name), channel)
+                    await message.node.add("#" + str(channel.name), channel)
 
             if message.node.expanded is False:
                 await message.node.expand()
