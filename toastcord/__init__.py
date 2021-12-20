@@ -11,7 +11,7 @@ WELCOME_SCREEN = """
 [blue]    ╩ ╚═╝╩ ╩╚═╝ ╩[/blue]   └─┘└─┘┴└┘└┴┘[blue bold]  ## ##[/blue bold]
 
   Discord client for nerds
-  Developed by toast#3108
+  Developed by [magenta]toast#3108[/magenta]
 
   - https://t.me/toastakerman
   - https://github.com/traumatism
