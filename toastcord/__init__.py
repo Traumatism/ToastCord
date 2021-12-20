@@ -22,6 +22,7 @@ WELCOME_SCREEN = """
   - This might be agains't the Discord TOS,
     see https://discord.com/terms.
 
-  - This is still being developed. Don't forget to `git fetch`
-    and `git pull` regularly.
+  - This is still being developed. Don't forget to [code]git fetch[/code]
+    and [code]git pull[/code] regularly.
+
 """

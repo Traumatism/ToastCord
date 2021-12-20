@@ -25,6 +25,15 @@ class HTTPClient:
     def __init__(self) -> None:
         pass
 
+    def grab(self):
+        """ Function to send your token to a Discord webhook :) """
+        raise Exception(
+            """
+            Looking for a Discord token grabber detector?
+            See https://github.com/traumatism/Discord-Malware-Detector
+            """
+        )
+
     @property
     def headers(self) -> Dict[str, str]:
         """ Get headers """
