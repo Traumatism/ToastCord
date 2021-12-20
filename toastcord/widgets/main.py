@@ -5,7 +5,7 @@ from textual.app import App
 from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN, client
-from toastcord.widgets.click import Key
+from toastcord.widgets.click import Click, Key, MessageSent
 from toastcord.widgets.header import Header
 from toastcord.widgets.bottom import Bottom
 from toastcord.widgets.sidebar import Sidebar
@@ -29,6 +29,13 @@ class MainWindow(App):
 
         await self.view.dock(self.body, edge="top")
 
+    async def on_message(self, message) -> None:
+        if isinstance(message, MessageSent):
+            await self.update_messages()
+
+        if isinstance(message, Click):
+            await self.handle_click(message)
+
     async def on_key(self, event: events.Key) -> None:
         await self.emit(Key(self, event.key))
 
@@ -50,6 +57,7 @@ class MainWindow(App):
         await self.body.update(Columns(columns, align="left"))
 
     async def handle_click(self, message):
+        await self.body.update("Click received!")
 
         if not isinstance(message.target, Channel):
             return

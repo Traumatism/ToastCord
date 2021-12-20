@@ -29,3 +29,10 @@ class Key(Message, bubble=True):
     ) -> None:
         self.target = target
         super().__init__(sender)
+
+
+@rich.repr.auto
+class MessageSent(Message, bubble=True):
+
+    def __init__(self, sender: MessageTarget) -> None:
+        super().__init__(sender)
