@@ -9,7 +9,6 @@
 ![](./3.png) ![](./1.png) ![](./2.png)
 
 ### TODO:
-    - Message sending support
     - Add notifications
     - Add profile lookup
     - Make API asynchronous
