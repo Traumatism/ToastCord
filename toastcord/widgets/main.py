@@ -25,9 +25,12 @@ class MainWindow(App):
         await self.view.dock(
             ScrollView(Sidebar()), edge="left", name="sidebar", size=40
         )
-        await self.view.dock(Bottom(), edge="bottom", size=3)
+
+        await self.view.dock(Bottom(), edge="bottom", size=10)
 
         await self.view.dock(self.body, edge="top")
+
+        await self.bind("r", "update_messages")
 
     async def on_message(self, message) -> None:
         if isinstance(message, MessageSent):
@@ -39,15 +42,14 @@ class MainWindow(App):
     async def on_key(self, event: events.Key) -> None:
         await self.emit(Key(self, event.key))
 
-    async def update_messages(self):
+    async def action_update_messages(self) -> None:
+        await self.update_messages()
+
+    async def update_messages(self) -> None:
         if client.selected_channel is None:
             return
 
-        await self.body.update("Loading messages...")
-
         await client.selected_channel.load_messages()
-
-        await self.body.update("Rendering messages...")
 
         columns = (
             render_message(message)
@@ -57,13 +59,10 @@ class MainWindow(App):
         await self.body.update(Columns(columns, align="left"))
 
     async def handle_click(self, message):
-        await self.body.update("Click received!")
 
         if not isinstance(message.target, Channel):
             return
 
         client.selected_channel = message.target
-
-        await self.body.update("Channel selected!")
 
         await self.update_messages()

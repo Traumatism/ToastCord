@@ -1,4 +1,8 @@
+import os
+
 from rich.console import RenderableType
+
+from typing import Union
 
 from textual.widget import Widget
 
@@ -10,41 +14,46 @@ from toastcord.api.types.channels import GuildChannel, MessageChannel
 
 class Bottom(Widget):
 
-    def __init__(self, name: str | None = None) -> None:
+    def __init__(self, name: Union[str, None] = None) -> None:
         super().__init__(name=name)
         self.user_input = ""
 
     def render(self) -> RenderableType:
-        if client.selected_channel is None:
-            return ""
 
         panel = get_panel()
-
         panel.border_style = "bold red"
 
-        panel.renderable = (
-            f"(null) 👉 '{self.user_input}'"
-        )
-
         if isinstance(client.selected_channel, GuildChannel):
-            panel.renderable = (
-                f"(#{client.selected_channel.name}) 👉 '{self.user_input}'"
+            panel.title = (
+                "[bright_black]"
+                f"#{client.selected_channel.name}"
+                "[/bright_black]"
             )
 
         if isinstance(client.selected_channel, MessageChannel):
-            panel.renderable = (
-                f"({client.selected_channel.recipient}) 👉 '{self.user_input}'"
+            panel.title = (
+                "[bright_black]"
+                f"{client.selected_channel.recipient}"
+                "[/bright_black]"
             )
+
+        panel.title_align = "left"
+
+        panel.renderable = self.user_input + (
+            " " * os.get_terminal_size().columns
+        )
 
         return panel
 
     async def on_event(self, event) -> None:
-        if client.selected_channel is None:
-            return
+        self.refresh()
 
         try:
             key = event.key
         except AttributeError:
+            return
+
+        if client.selected_channel is None:
             return
 
         if key == "ctrl+h":
