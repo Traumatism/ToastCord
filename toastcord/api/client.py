@@ -1,3 +1,4 @@
+from typing import Iterable
 from .http import HTTPClient
 
 from .types.user import User
@@ -17,7 +18,7 @@ class Client:
         self.user = self.__user
 
     @property
-    def guilds(self):
+    def guilds(self) -> Iterable[Guild]:
         """ Get all guilds """
         response = http_client.get("/users/@me/guilds")
 
@@ -29,7 +30,7 @@ class Client:
             )
 
     @property
-    def channels(self):
+    def channels(self) -> Iterable[MessageChannel]:
         """ Get all channels """
         response = http_client.get("/users/@me/channels")
 

@@ -8,20 +8,12 @@ from ..api.types.channels import Channel, GuildChannel
 
 
 @rich.repr.auto
-class ChannelClick(Message, bubble=True):
-    """ Handle clicks on channels """
-
-    def __init__(self, sender: MessageTarget, channel: Channel) -> None:
-        self.channel = channel
-        super().__init__(sender)
-
-
-@rich.repr.auto
-class GuildClick(Message, bubble=True):
-    """ Handle clicks on guilds """
+class Click(Message, bubble=True):
+    """ Handle click """
 
     def __init__(
-        self, sender: MessageTarget, guild: Union[Guild, GuildChannel]
+        self, sender: MessageTarget,
+        target: Union[Guild, Channel, GuildChannel]
     ) -> None:
-        self.guild = guild
+        self.target = target
         super().__init__(sender)

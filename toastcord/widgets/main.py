@@ -1,19 +1,16 @@
 import os
 
-from rich.table import Table
-
+from textual import events
 from textual.app import App
 from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN, client
 
 from toastcord.utils.panel import get_panel
-from toastcord.api.types.channels import GuildChannel
+from toastcord.api.types.channels import Channel
 
 from .header import Header
-from .click import ChannelClick, GuildClick
-from .sidebars.guilds import GuildsSidebar
-from .sidebars.channels import ChannelsSidebar
+from .sidebar import Sidebar
 
 
 class MainWindow(App):
@@ -26,55 +23,46 @@ class MainWindow(App):
 
         self.body = ScrollView(panel)
 
+        panel = get_panel()
+        panel.renderable = "> "
+        panel.height = 5
+
+        self.search = ScrollView(panel)
+
         await self.view.dock(Header(), edge="top", size=3)
 
         await self.view.dock(
-            ScrollView(ChannelsSidebar()), ScrollView(GuildsSidebar()),
+            ScrollView(Sidebar()),
             edge="left", name="sidebar", size=30
         )
 
         await self.view.dock(self.body, edge="top")
+        await self.view.dock(self.search, edge="top", size=10)
 
-    async def handle_guild_click(self, message: GuildClick) -> None:
-        if isinstance(message.guild, GuildChannel):
-            return
+    async def on_key(self, event: events.Key) -> None:
+        await self.search.update(event.key)
 
-        await message.guild.load_informations()
+    async def handle_click(self, message):
 
-        table = Table.grid(padding=(0, 1), expand=True)
+        if isinstance(message.target, Channel):
+            await self.body.update("Loading messages...")
 
-        table.add_column("Key", style="yellow")
-        table.add_column("Value", style="red")
+            await message.target.load_messages()
 
-        table.add_row("Name", message.guild.name)
-        table.add_row("Description", message.guild.description)
-        table.add_row("Owner ID", str(message.guild.owner_id))
-        table.add_row("Channel count", str(len(message.guild.channels)))
+            text = ""
 
-        panel = get_panel()
-        panel.renderable = table
+            for _message in message.target.messages:
+                style = "dim" if _message.author == client.user else "bold"
 
-        await self.body.update(panel)
+                text += f"[{style}]"
+                text += f'[white]{_message.author}[/white]: '
+                text += f"[green]{_message.content}[/green]"
+                text += f"[/{style}]"
 
-    async def handle_channel_click(self, message: ChannelClick) -> None:
+                text += "\n\n"
 
-        await self.body.update("Loading messages...")
+            panel = get_panel()
+            panel.renderable = text
+            panel.height = os.get_terminal_size().lines - 3
 
-        await message.channel.load_messages()
-
-        text = ""
-
-        for _message in message.channel.messages:
-            style = "dim" if _message.author == client.user else "bold"
-
-            text += f"[{style}]"
-            text += f'[white]{_message.author}[/white]: '
-            text += f"[green]{_message.content}[/green]"
-            text += f"[/{style}]"
-
-            text += "\n\n"
-
-        panel = get_panel()
-        panel.renderable = text
-
-        await self.body.update(panel)
+            return await self.body.update(panel)

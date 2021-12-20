@@ -20,5 +20,6 @@ WELCOME_SCREEN = """
     ! Warn #1: This is a beta version. Bug reports and feature requests are welcome at @toastakerman.
 
     ! Warn #2: This might be agains't the Discord TOS (https://discord.com/terms).
-    
+
+    ! Warn #3: This is still being developed. Don't forget to `git fetch` and `git pull` regularly.
 """
