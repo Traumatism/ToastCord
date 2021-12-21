@@ -24,8 +24,7 @@ class Channel:
     async def send_message(self, message: str):
         """ Send a message to the user """
         await AsyncHTTPClient.post(
-            f"/channels/{self.id}/messages",
-            data={"content": message, "tts": False}
+            f"/channels/{self.id}/messages", data={"content": message}
         )
 
     async def load_messages(self, limit: int = 100):

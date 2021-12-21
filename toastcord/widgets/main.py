@@ -5,7 +5,6 @@ from rich.panel import Panel
 
 from typing import List
 
-from textual import events
 from textual.app import App
 from textual.widgets import ScrollView
 
@@ -18,11 +17,11 @@ from toastcord.utils.message import (
 )
 
 from toastcord.widgets.header import Header
-from toastcord.widgets.bottom import Bottom
+from toastcord.widgets.input import Input
 from toastcord.widgets.sidebar import Sidebar
 
 from toastcord.widgets.messages import (
-    ChannelChanged, Click, Key, MessageSent
+    ChannelChanged, Click, MessageSent
 )
 
 from toastcord.api.types import (
@@ -36,7 +35,7 @@ class MainWindow(App):
 
         self.body = ScrollView(WELCOME_SCREEN)
         self.sidebar = ScrollView(Sidebar())
-        self.bottom = Bottom()
+        self.bottom = Input()
 
         self.body.name = ""
         self.sidebar.name = ""
@@ -62,9 +61,6 @@ class MainWindow(App):
 
         if isinstance(message, ChannelChanged):
             self.bottom.refresh()
-
-    async def on_key(self, event: events.Key) -> None:
-        await self.emit(Key(self, event.key))
 
     async def action_update_messages(self) -> None:
         await self.update_messages()
