@@ -1,6 +1,7 @@
 import re
 
 from dataclasses import dataclass
+
 from typing import List, Union
 
 from .user import User
@@ -8,8 +9,6 @@ from .message import Message, ToastBotMessage
 from ..http import AsyncHTTPClient
 
 PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"
-
-http_client = AsyncHTTPClient()
 
 
 @dataclass
@@ -24,7 +23,7 @@ class Channel:
 
     async def send_message(self, message: str):
         """ Send a message to the user """
-        await http_client.post(
+        await AsyncHTTPClient.post(
             f"/channels/{self.id}/messages",
             data={"content": message, "tts": False}
         )
@@ -33,7 +32,7 @@ class Channel:
         """ Load channel messages """
         self.messages = []
 
-        response = await http_client.get(
+        response = await AsyncHTTPClient.get(
             f"/channels/{self.id}/messages?limit={limit}"
         )
 
@@ -70,5 +69,5 @@ class GuildChannel(Channel):
     """ A guild channel """
     name: str
 
-    def __hash__(self) -> int:
-        return int(self.id)
+    allow_reading: bool = True
+    allow_writing: bool = True

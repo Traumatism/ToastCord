@@ -1,13 +1,10 @@
 from typing import Iterable, Union
 
-from .http import HTTPClient, AsyncHTTPClient
+from .http import HTTPClient
 
 from .types.user import User
 from .types.guild import Guild
 from .types.channels import MessageChannel, Channel
-
-http_client = HTTPClient()
-async_http_client = AsyncHTTPClient()
 
 
 class Client:
@@ -26,7 +23,7 @@ class Client:
     @property
     def guilds(self) -> Iterable[Guild]:
         """ Get all guilds """
-        response = http_client.get("/users/@me/guilds")
+        response = HTTPClient.get("/users/@me/guilds")
 
         for guild in response:
             yield Guild(
@@ -38,7 +35,7 @@ class Client:
     @property
     def channels(self) -> Iterable[MessageChannel]:
         """ Get all channels """
-        response = http_client.get("/users/@me/channels")
+        response = HTTPClient.get("/users/@me/channels")
 
         for channel in response:
 
@@ -60,7 +57,7 @@ class Client:
     @property
     def __user(self) -> User:
         """ Get the current user """
-        response = http_client.get("/users/@me")
+        response = HTTPClient.get("/users/@me")
 
         return User(
             id=response["id"],
