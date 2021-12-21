@@ -5,7 +5,7 @@ from typing import Dict
 
 from ..arguments import arguments
 
-BASE = "%(url)s/%(version)s"
+BASE = "%(backend)s/%(version)s"
 
 HEADERS = {
     "Authorization": arguments.token,
@@ -17,7 +17,7 @@ full_url = (
     if not arguments.api_backend.endswith('/') else arguments.api_backend[:-1]
 )
 
-API_BACKEND = BASE % {"version": arguments.api_version, "url": full_url}
+API_BACKEND = BASE % {"version": arguments.api_version, "backend": full_url}
 
 
 class HTTPClient:
