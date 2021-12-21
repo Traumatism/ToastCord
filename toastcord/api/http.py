@@ -27,7 +27,7 @@ class HTTPClient:
     def get(endpoint: str, params: Dict = {}) -> Dict:
         """ Get data from the API """
         response = requests.get(
-            API_BACKEND + endpoint,  headers=HEADERS, params=params
+            API_BACKEND + endpoint, headers=HEADERS, params=params
         )
 
         return response.json()

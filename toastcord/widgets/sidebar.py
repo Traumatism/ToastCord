@@ -15,9 +15,8 @@ from toastcord.widgets.messages import (
     ChannelChanged, Click
 )
 
-from toastcord.api.types import (
-    Guild, Channel
-)
+from toastcord.api.types.guild import Guild
+from toastcord.api.types.channels import Channel
 
 LOGO = Text("ToastCord", style="blue")
 

@@ -23,9 +23,9 @@ from toastcord.widgets.messages import (
     ChannelChanged, Click, MessageSent
 )
 
-from toastcord.api.types import (
-    Channel, Guild, ToastBotMessage
-)
+from toastcord.api.types.guild import Guild
+from toastcord.api.types.message import ToastBotMessage
+from toastcord.api.types.channels import Channel
 
 
 class MainWindow(App):
