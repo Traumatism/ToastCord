@@ -43,7 +43,6 @@ class Input(Widget):
 
         panel.title_align = "left"
 
-        # expand to the full width of the window
         panel.renderable = (
             self.user_input + (" " * os.get_terminal_size().columns)
         )
