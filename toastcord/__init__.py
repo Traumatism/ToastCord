@@ -1,4 +1,4 @@
-version = "1.0.0"
+version = "2.0.0"
 
 from .api.client import Client
 
@@ -6,9 +6,9 @@ client = Client()
 
 WELCOME_SCREEN = """
 
-[blue]   ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/blue]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]
-[blue]    ║ ║ ║╠═╣╚═╗ ║[/blue]   │  │ │├┬┘ ││[blue bold] ##[bold white]@[/bold white]#[bold white]@[/bold white]##[/blue bold]
-[blue]    ╩ ╚═╝╩ ╩╚═╝ ╩[/blue]   └─┘└─┘┴└┘└┴┘[blue bold]  ## ##[/blue bold]
+[blue]  ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/blue]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]
+[blue]   ║ ║ ║╠═╣╚═╗ ║[/blue]   │  │ │├┬┘ ││[blue bold] ##[bold white]@[/bold white]#[bold white]@[/bold white]##[/blue bold]
+[blue]   ╩ ╚═╝╩ ╩╚═╝ ╩[/blue]   └─┘└─┘┴└┘└┴┘[blue bold]  ## ##[/blue bold]
 
   Discord client for nerds
   Developed by [magenta]toast#3108[/magenta]

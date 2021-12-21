@@ -21,8 +21,11 @@ class Input(Widget):
 
     def render(self) -> RenderableType:
 
+        if client.selected_channel is None:
+            return ""
+
         panel = get_panel()
-        panel.border_style = "bold red"
+        panel.border_style = "cyan"
 
         if isinstance(client.selected_channel, GuildChannel):
             panel.title = (
@@ -40,6 +43,7 @@ class Input(Widget):
 
         panel.title_align = "left"
 
+        # expand to the full width of the window
         panel.renderable = (
             self.user_input + (" " * os.get_terminal_size().columns)
         )

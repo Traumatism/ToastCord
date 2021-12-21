@@ -1,5 +1,3 @@
-from pyfiglet import figlet_format
-
 from rich.columns import Columns
 from rich.panel import Panel
 
@@ -15,6 +13,7 @@ from toastcord import (
 from toastcord.utils.message import (
     render_message, render_toastbot_message
 )
+from toastcord.utils.panel import get_panel
 
 from toastcord.widgets.header import Header
 from toastcord.widgets.input import Input
@@ -65,7 +64,8 @@ class MainWindow(App):
     async def action_update_messages(self) -> None:
         await self.update_messages()
 
-    async def get_messages(self) -> List[Panel]:
+    async def parse_messages(self) -> List[Panel]:
+
         if client.selected_channel is None:
             return []
 
@@ -82,7 +82,7 @@ class MainWindow(App):
         if client.selected_channel is None:
             return
 
-        columns = await self.get_messages()
+        columns = await self.parse_messages()
 
         await self.body.update(Columns(columns, align="left"))
 
@@ -92,11 +92,10 @@ class MainWindow(App):
             return
 
         if isinstance(message.target, Guild):
-            await message.target.load_informations()
+            panel = get_panel()
+            panel.renderable = "Select a channel to start chatting"
 
-            ascii_art = figlet_format(message.target.name, font="slant")
-
-            await self.body.update(ascii_art)
+            await self.body.update(panel)
 
             return self.refresh()
 

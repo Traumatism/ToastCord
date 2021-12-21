@@ -10,7 +10,10 @@ from rich.text import Text
 from rich.console import RenderableType
 
 from toastcord import client
-from toastcord.widgets.messages import ChannelChanged, Click
+
+from toastcord.widgets.messages import (
+    ChannelChanged, Click
+)
 
 from toastcord.api.types import (
     Guild, Channel
@@ -25,10 +28,14 @@ class Sidebar(TreeControl):
         super().__init__(LOGO, name=name, data=0)
         self.root.tree.guide_style = "black"
 
+        self.show = True
+
     has_focus: Reactive[bool] = Reactive(False)
 
     def render(self) -> RenderableType:
-        return self._tree
+        if self.show is True:
+            return self._tree
+        return ""
 
     def on_focus(self) -> None:
         self.has_focus = True
