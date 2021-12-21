@@ -1,6 +1,6 @@
-from typing import Iterable, Union
+from typing import Iterable, List, Union
 
-from .http import HTTPClient
+from .http import HTTPClient, AsyncHTTPClient
 
 from .types.user import User
 from .types.guild import Guild
@@ -20,6 +20,18 @@ class Client:
             return False
         return True
 
+    async def guilds_async(self) -> List[Guild]:
+        """ Get all guilds asynchronously """
+        response = await AsyncHTTPClient.get("/users/@me/guilds")
+
+        return [
+            Guild(
+                id=guild["id"],
+                name=guild["name"],
+                channels=guild["channels"]
+            ) for guild in response
+        ]
+
     @property
     def guilds(self) -> Iterable[Guild]:
         """ Get all guilds """
@@ -31,6 +43,30 @@ class Client:
                 name=guild["name"],
                 channels=[]
             )
+
+    async def channels_async(self):
+        """ Get all channels asynchronously """
+        response = await AsyncHTTPClient.get("/users/@me/channels")
+        channels = []
+
+        for channel in response:
+
+            if len(channel["recipients"]) != 1:
+                continue
+
+            user = User(
+                id=channel["recipients"][0]["id"],
+                username=channel["recipients"][0]["username"],
+                discriminator=channel["recipients"][0]["discriminator"]
+            )
+
+            channels.append(MessageChannel(
+                id=channel["id"],
+                recipient=user,
+                messages=[]
+            ))
+
+        return channels
 
     @property
     def channels(self) -> Iterable[MessageChannel]:

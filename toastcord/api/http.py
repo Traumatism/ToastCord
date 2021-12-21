@@ -17,7 +17,7 @@ full_url = (
     if not arguments.api_backend.endswith('/') else arguments.api_backend[:-1]
 )
 
-API_BACKEND = BASE % {"version": arguments.api_version, "backend": full_url}
+API_BACKEND = BASE % {"version": arguments.api_version, "url": full_url}
 
 
 class HTTPClient:

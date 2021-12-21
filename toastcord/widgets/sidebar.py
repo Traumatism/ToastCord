@@ -88,7 +88,9 @@ class Sidebar(TreeControl):
         await self.root.add("Guilds", data=2)
         await self.root.add("Manage friends", data=3)
 
-        for direct_message in client.channels:
+        channels = await client.channels_async()
+
+        for direct_message in channels:
             await self.root.children[0].add(
                 direct_message.recipient.username, data=direct_message
             )
