@@ -16,6 +16,7 @@ class Bottom(Widget):
 
     def __init__(self, name: Union[str, None] = None) -> None:
         super().__init__(name=name)
+
         self.user_input = ""
 
     def render(self) -> RenderableType:

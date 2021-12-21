@@ -4,14 +4,18 @@ from typing import Dict
 
 from ..arguments import arguments
 
-# Discord API version
-API_VERSION = "v9"
+BASE = "https://%(backend)s/%(version)s"
 
 API_BACKEND = (
-    "https://canary.discord.com/api/%(version)s" % {"version": API_VERSION}
+    BASE % {
+        "version": arguments.api_version,
+        "backend": (
+            arguments.api_backend
+            if not arguments.api_backend.endswith("/")
+            else arguments.api_backend[:-1]
+        )
+    }
 )
-
-TOKEN = arguments.token
 
 
 class HTTPClient:
@@ -32,7 +36,7 @@ class HTTPClient:
     @property
     def headers(self) -> Dict[str, str]:
         """ Get headers """
-        return {"Authorization": TOKEN}
+        return {"Authorization": arguments.token}
 
     def get(self, endpoint: str, params: Dict = {}) -> Dict:
         """ Get data from the API """

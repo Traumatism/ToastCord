@@ -18,6 +18,10 @@ class Channel:
     id: int
     messages: List[Message]
 
+    def __init__(self) -> None:
+        if not issubclass(self.__class__, (GuildChannel, MessageChannel)):
+            raise NotImplementedError('you cannot instantiate this class')
+
     async def send_message(self, message: str):
         """ Send a message to the user """
         http_client.post(
