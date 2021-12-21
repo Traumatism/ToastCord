@@ -2,4 +2,3 @@ pyfiglet
 textual
 rich
 aiohttp
-termios
