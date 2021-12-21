@@ -36,7 +36,7 @@ class Sidebar(TreeControl):
 
     @lru_cache(maxsize=1024 * 32)
     def render_tree_label(
-        self, node: TreeNode, is_hover: bool, is_cursor: bool, has_focus: bool
+        self, node: TreeNode, is_hover: bool, *args, **kwargs
     ) -> RenderableType:
 
         meta = {
