@@ -1,3 +1,4 @@
 pyfiglet
 textual
 rich
+aiohttp
