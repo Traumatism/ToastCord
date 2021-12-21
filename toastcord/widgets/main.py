@@ -4,17 +4,24 @@ from textual import events
 from textual.app import App
 from textual.widgets import ScrollView
 
-from toastcord import WELCOME_SCREEN, client
-from toastcord.widgets.click import Click, Key, MessageSent
+from toastcord import (
+    WELCOME_SCREEN, client
+)
+
+from toastcord.api.types.guild import Guild
 from toastcord.widgets.header import Header
 from toastcord.widgets.bottom import Bottom
 from toastcord.widgets.sidebar import Sidebar
+
+from toastcord.widgets.messages import (
+    Click, Key, MessageSent
+)
+
 from toastcord.api.types.channels import Channel
 from toastcord.utils.message import render_message
 
 
 class MainWindow(App):
-    """ Main TUI window """
 
     async def on_mount(self) -> None:
 
@@ -62,9 +69,14 @@ class MainWindow(App):
 
         await self.body.update(Columns(columns, align="left"))
 
-    async def handle_click(self, message):
+    async def handle_click(self, message: Click) -> None:
 
         if not isinstance(message.target, Channel):
+            return
+
+        if isinstance(message.target, Guild):
+            await message.target.load_informations()
+
             return
 
         client.selected_channel = message.target

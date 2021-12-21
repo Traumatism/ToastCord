@@ -4,6 +4,16 @@ from toastcord import version
 
 parser = argparse.ArgumentParser()
 
+actions = parser.add_subparsers(dest="action")
+
+join = actions.add_parser("join", help="Join a server")
+
+join.add_argument(
+    "invite",
+    help="The invite code to join a server",
+    metavar="<code>"
+)
+
 parser.add_argument(
     "-t", "--token",
     required=True,

@@ -8,7 +8,7 @@ from textual.widget import Widget
 
 from toastcord import client
 from toastcord.utils.panel import get_panel
-from toastcord.widgets.click import MessageSent
+from toastcord.widgets.messages import MessageSent
 from toastcord.api.types.channels import GuildChannel, MessageChannel
 
 
@@ -40,8 +40,8 @@ class Bottom(Widget):
 
         panel.title_align = "left"
 
-        panel.renderable = self.user_input + (
-            " " * os.get_terminal_size().columns
+        panel.renderable = (
+            self.user_input + (" " * os.get_terminal_size().columns)
         )
 
         return panel
@@ -59,6 +59,10 @@ class Bottom(Widget):
 
         if key == "ctrl+h":
             self.user_input = self.user_input[:-1]
+
+        if key == "crtl+w":
+            self.user_input = self.user_input[:-4]
+
         elif key == "enter":
             await client.selected_channel.send_message(self.user_input)
             self.user_input = ""  # flush input
@@ -67,4 +71,3 @@ class Bottom(Widget):
             self.user_input += key
 
         self.refresh(layout=True)
-

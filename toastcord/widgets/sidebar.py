@@ -10,23 +10,22 @@ from rich.text import Text
 from rich.console import RenderableType
 
 from toastcord import client
-from toastcord.widgets.click import Click
+from toastcord.widgets.messages import Click
 from toastcord.api.types.guild import Guild
-from toastcord.utils.panel import get_panel
+
+LOGO = Text("@", style="blue")
 
 
 class Sidebar(TreeControl):
 
     def __init__(self, name: str = "") -> None:
-        super().__init__("👾 ToastCord", name=name, data=None)
+        super().__init__(LOGO, name=name, data=0)
         self.root.tree.guide_style = "black"
 
     has_focus: Reactive[bool] = Reactive(False)
 
     def render(self) -> RenderableType:
-        panel = get_panel()
-        panel.renderable = self._tree
-        return panel
+        return self._tree
 
     def on_focus(self) -> None:
         self.has_focus = True
@@ -36,7 +35,8 @@ class Sidebar(TreeControl):
 
     @lru_cache(maxsize=1024 * 32)
     def render_tree_label(
-        self, node: TreeNode, is_hover: bool, *args, **kwargs
+        self, node: TreeNode, is_hover: bool,
+        is_cursor: bool, has_focus: bool, expanded: bool
     ) -> RenderableType:
 
         meta = {
@@ -49,10 +49,11 @@ class Sidebar(TreeControl):
 
         icon = ""
 
-        if is_hover:
-            label.stylize("bold green")
-        else:
-            label.stylize("dim green")
+        if is_cursor:
+            label.stylize("bold cyan")
+
+        if expanded:
+            label.stylize("bold")
 
         icon_label = Text(icon, no_wrap=True, overflow="ellipsis") + label
         icon_label.apply_meta(meta)
@@ -65,11 +66,13 @@ class Sidebar(TreeControl):
             node.is_cursor,
             node.id == self.hover_node,
             self.has_focus,
+            node.expanded
         )
 
     async def on_mount(self) -> None:
-        await self.root.add("📝 Direct messages ", data="Direct messages")
-        await self.root.add("📝 Guilds", data="Guilds")
+        await self.root.add("@ Direct messages ", data=1)
+        await self.root.add("@ Guilds", data=2)
+        await self.root.add("@ Manage friends", data=3)
 
         for direct_message in client.channels:
             await self.root.children[0].add(
@@ -83,13 +86,12 @@ class Sidebar(TreeControl):
                 data=guild
             )
 
-        await self.root.expand()
-        await self.root.children[0].expand()
-        await self.root.children[1].expand()
-
         self.refresh(layout=True)
 
     async def handle_tree_click(self, message: TreeClick) -> None:
+        if message.node.data in (0, 1, 2, 3):
+            await message.node.toggle()
+            return self.refresh()
 
         if isinstance(message.node.data, Guild):
             await message.node.data.load_channels()
@@ -100,7 +102,6 @@ class Sidebar(TreeControl):
                 if channel.id not in ids:
                     await message.node.add(channel.name, channel)
 
-            if message.node.expanded is False:
-                await message.node.expand()
+            await message.node.toggle()
 
         await self.emit(Click(self, message.node.data))
