@@ -1,5 +1,7 @@
 import re
 
+from rich.markup import escape
+
 from dataclasses import dataclass
 
 from typing import List, Union
@@ -51,7 +53,7 @@ class Channel:
 
             self.messages.append(Message(
                 id=message["id"], author=author,
-                content=message["content"],
+                content=escape(message["content"]),
                 timestamp=parsed_timestamp.group("hour"),
                 date=parsed_timestamp.group("date")
             ))

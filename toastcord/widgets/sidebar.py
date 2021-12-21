@@ -1,9 +1,6 @@
 from functools import lru_cache
 
-from textual.widgets import (
-    TreeClick, TreeControl, TreeNode
-)
-
+from textual.widgets import TreeClick, TreeControl, TreeNode
 from textual.reactive import Reactive
 
 from rich.text import Text
@@ -11,12 +8,10 @@ from rich.console import RenderableType
 
 from toastcord import client
 
-from toastcord.widgets.messages import (
-    ChannelChanged, Click
-)
-
 from toastcord.api.types.guild import Guild
 from toastcord.api.types.channels import Channel
+
+from toastcord.widgets.messages import ChannelChanged, Click
 
 LOGO = Text("ToastCord", style="blue")
 
