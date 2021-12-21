@@ -18,8 +18,11 @@ class MainWindow(App):
 
     async def on_mount(self) -> None:
 
-        self.body = ScrollView(WELCOME_SCREEN, name="body")
-        self.sidebar = ScrollView(Sidebar(), name="sidebar")
+        self.body = ScrollView(WELCOME_SCREEN)
+        self.sidebar = ScrollView(Sidebar())
+
+        self.body.name = ""
+        self.sidebar.name = ""
 
         await self.view.dock(Header(), edge="top", size=3)
 
