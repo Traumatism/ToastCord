@@ -67,3 +67,4 @@ class Bottom(Widget):
             self.user_input += key
 
         self.refresh(layout=True)
+

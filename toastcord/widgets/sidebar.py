@@ -17,7 +17,7 @@ from toastcord.utils.panel import get_panel
 
 class Sidebar(TreeControl):
 
-    def __init__(self, name: str = None) -> None:
+    def __init__(self, name: str = "") -> None:
         super().__init__("👾 ToastCord", name=name, data=None)
         self.root.tree.guide_style = "black"
 
@@ -36,11 +36,7 @@ class Sidebar(TreeControl):
 
     @lru_cache(maxsize=1024 * 32)
     def render_tree_label(
-        self,
-        node: TreeNode,
-        is_cursor: bool,
-        is_hover: bool,
-        has_focus: bool,
+        self, node: TreeNode, is_hover: bool
     ) -> RenderableType:
 
         meta = {
@@ -50,15 +46,13 @@ class Sidebar(TreeControl):
         }
 
         label = Text(node.label) if isinstance(node.label, str) else node.label
-        icon = ""
+
+        icon = "🧩" if isinstance(node.data, Guild) else "#"
 
         if is_hover:
             label.stylize("bold green")
         else:
             label.stylize("dim green")
-
-        if is_cursor and has_focus:
-            label.stylize("reverse")
 
         icon_label = Text(icon, no_wrap=True, overflow="ellipsis") + label
         icon_label.apply_meta(meta)
@@ -104,7 +98,7 @@ class Sidebar(TreeControl):
 
             for channel in message.node.data.channels:
                 if channel.id not in ids:
-                    await message.node.add("#" + str(channel.name), channel)
+                    await message.node.add(channel.name, channel)
 
             if message.node.expanded is False:
                 await message.node.expand()

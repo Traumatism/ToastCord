@@ -1,5 +1,6 @@
 import argparse
 
+from toastcord import version
 
 parser = argparse.ArgumentParser()
 
@@ -11,9 +12,17 @@ parser.add_argument(
     metavar="<value>"
 )
 
-api_options = parser.add_argument_group(
-    "Discord API options"
+http_options = parser.add_argument_group("HTTP Options")
+
+http_options.add_argument(
+    "--user-agent",
+    default=f"toastcord/{version}",
+    help="User-Agent header",
+    dest="user_agent",
+    metavar="<value>"
 )
+
+api_options = parser.add_argument_group("Discord API options")
 
 api_options.add_argument(
     "--api-backend",

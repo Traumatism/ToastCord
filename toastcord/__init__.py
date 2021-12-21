@@ -1,8 +1,8 @@
+version = "1.0.0"
+
 from .api.client import Client
 
 client = Client()
-
-version = "1.0.0"
 
 WELCOME_SCREEN = """
 

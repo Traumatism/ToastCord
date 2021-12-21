@@ -1,10 +1,15 @@
-# ToastCord
+# 👾 ToastCord
 
-## This is being updated, don't forget to `git fetch` and `git pull` regularly.
 
 ### ToastCord is a Discord Terminal UI.
 
-### At the moment you can only look at Direct messages.
+### This is being updated, don't forget to `git fetch` and `git pull` regularly.
+
+### Features
+
+- Look messages through guilds channels & DMs
+- Send messages to guilds channels & DMs
+
 
 ![](./1.png) ![](./2.png) ![](./3.png)
 
