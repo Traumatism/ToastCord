@@ -7,6 +7,8 @@ from toastcord import client
 if __name__ == "__main__":
     console = Console()
 
+    console.log("Initializing client...")
+
     response = client.initalize()
 
     if response is False:

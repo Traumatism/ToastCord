@@ -19,23 +19,20 @@ from toastcord.api.types import (
     Guild, Channel
 )
 
-LOGO = Text("@", style="blue")
+LOGO = Text("ToastCord", style="blue")
 
 
 class Sidebar(TreeControl):
 
     def __init__(self, name: str = "") -> None:
         super().__init__(LOGO, name=name, data=0)
-        self.root.tree.guide_style = "black"
 
-        self.show = True
+        self.root.tree.guide_style = "black"
 
     has_focus: Reactive[bool] = Reactive(False)
 
     def render(self) -> RenderableType:
-        if self.show is True:
-            return self._tree
-        return ""
+        return self._tree
 
     def on_focus(self) -> None:
         self.has_focus = True
@@ -55,9 +52,12 @@ class Sidebar(TreeControl):
             "cursor": node.is_cursor,
         }
 
-        label = Text(node.label) if isinstance(node.label, str) else node.label
+        label = (
+            Text(node.label, style="blue")
+            if isinstance(node.label, str) else node.label
+        )
 
-        icon = ""
+        icon = "# " if isinstance(node.data, Channel) else "@ "
 
         if is_cursor:
             label.stylize("bold cyan")
@@ -65,7 +65,11 @@ class Sidebar(TreeControl):
         if expanded:
             label.stylize("bold")
 
-        icon_label = Text(icon, no_wrap=True, overflow="ellipsis") + label
+        icon_label = (
+            Text(icon, no_wrap=True, overflow="ellipsis", style="bright_black")
+            + label
+        )
+
         icon_label.apply_meta(meta)
 
         return icon_label
@@ -80,9 +84,9 @@ class Sidebar(TreeControl):
         )
 
     async def on_mount(self) -> None:
-        await self.root.add("@ Direct messages ", data=1)
-        await self.root.add("@ Guilds", data=2)
-        await self.root.add("@ Manage friends", data=3)
+        await self.root.add("Direct messages ", data=1)
+        await self.root.add("Guilds", data=2)
+        await self.root.add("Manage friends", data=3)
 
         for direct_message in client.channels:
             await self.root.children[0].add(
@@ -95,6 +99,7 @@ class Sidebar(TreeControl):
         self.refresh(layout=True)
 
     async def handle_tree_click(self, message: TreeClick) -> None:
+
         if message.node.data in (0, 1, 2, 3):
             await message.node.toggle()
             return self.refresh()
