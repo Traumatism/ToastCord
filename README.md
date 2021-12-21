@@ -7,11 +7,13 @@
 
 ### Getting started 😃
 
-This only support UNIX based systems. If you are a Windows user you can still use Windows Subsystem for Linux (WSL) to run this.
+This only support UNIX based systems. If you are a Windows user you can still use Windows Subsystem for Linux (WSL) to run this. You can find the WSL [here](https://wsl.microsoft.com/)
+Also, running this remotely (e.g. on a server as Cloud Shell) is not recommended.
 
 - Clone the repo with `git clone https://github.com/traumatism/ToastCord`
 - Install the requirements with `python3 -m pip install -r requirements.txt`
-- Run ToastCord with `python3 -m toastcord --token "YOUR_TOKEN_HERE"`
+- (Optional) Export your token in your (bash/zsh)rc with `export DISCORD_TOKEN=<your token> >> ~/.bashrc`
+- Run ToastCord with `python3 -m toastcord --token "$DISCORD_TOKEN"`
 
 Needing help or having issues ? Message me on Discord: `toast#3108` !
 
