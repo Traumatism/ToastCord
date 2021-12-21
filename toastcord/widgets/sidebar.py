@@ -47,7 +47,7 @@ class Sidebar(TreeControl):
 
         label = Text(node.label) if isinstance(node.label, str) else node.label
 
-        icon = "🧩" if isinstance(node.data, Guild) else "#"
+        icon = ""
 
         if is_hover:
             label.stylize("bold green")
