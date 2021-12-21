@@ -8,13 +8,13 @@
 ### Features
 
 - Look messages through guilds channels & DMs
-- Send messages to guilds channels & DMs
-
+- Send messages to guilds channels
+- Send messages to users
+- Asynchronous HTTP client
 
 ![](./1.png) ![](./2.png) ![](./3.png)
 
 ### TODO:
     - Add notifications
     - Add profile lookup
-    - Make API asynchronous
     - Full conversations loading
