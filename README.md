@@ -7,6 +7,8 @@
 
 ### Getting started 😃
 
+This only support UNIX based systems. If you are a Windows user you can still use Windows Subsystem for Linux (WSL) to run this.
+
 - Clone the repo with `git clone https://github.com/traumatism/ToastCord`
 - Install the requirements with `pip3 install -r requirements.txt`
 - Run ToastCord with `python3 -m toastcord --token "YOUR_TOKEN_HERE"`
