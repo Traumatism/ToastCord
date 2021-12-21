@@ -1,8 +1,7 @@
-# 🍞 `Toast`*Cord*  👾
+<h1 align="center">ToastCord</h1>
+<i><h3 align="center">a Discord Terminal UI made in Python 3</h3></i>
+<br>
 
-ToastCord is a Discord Terminal UI made in Python 3
-
-This is being updated, don't forget to `git fetch` and `git pull` regularly.
 
 ⚠️ This is against the [Discord ToS](https://discord.com/terms)
 
@@ -33,3 +32,5 @@ Needing help or having issues ? Message me on Discord: `toast#3108` !
 - Add notifications
 - Add profile lookup
 - "Infinite" conversations loading (from the last message to the first, progressively)
+
+👉 This is being updated, don't forget to `git fetch` and `git pull` regularly.
