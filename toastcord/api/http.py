@@ -1,4 +1,5 @@
 import requests
+import aiohttp
 
 from typing import Dict
 
@@ -16,6 +17,40 @@ API_BACKEND = (
         )
     }
 )
+
+
+class AsyncHTTPClient:
+    """ Same as HTTPClient, but async """
+
+    def __init__(self) -> None:
+        ...
+
+    @property
+    def headers(self) -> Dict[str, str]:
+        """ Get the headers """
+        return {
+            "Authorization": arguments.token,
+            "User-Agent": arguments.user_agent
+        }
+
+    async def get(self, endpoint: str, params: Dict = {}) -> Dict:
+        """ Get data from the API """
+        async with aiohttp.ClientSession() as session:
+            async with session.get(
+                API_BACKEND + endpoint, headers=self.headers, params=params
+            ) as response:
+                return await response.json()
+
+    async def post(
+        self, endpoint: str, data: Dict = {}, params: Dict = {}
+    ) -> Dict:
+        """ Post data to the API """
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                API_BACKEND + endpoint,
+                headers=self.headers, params=params, data=data
+            ) as response:
+                return await response.json()
 
 
 class HTTPClient:
@@ -43,15 +78,19 @@ class HTTPClient:
 
     def get(self, endpoint: str, params: Dict = {}) -> Dict:
         """ Get data from the API """
-        return requests.get(
+        response = requests.get(
             API_BACKEND + endpoint,  headers=self.headers, params=params
-        ).json()
+        )
+
+        return response.json()
 
     def post(
         self, endpoint: str, data: Dict = {}, params: Dict = {}
     ) -> Dict:
         """ Post data to the API """
-        return requests.post(
+        response = requests.post(
             API_BACKEND + endpoint,
             headers=self.headers, data=data,  params=params
-        ).json()
+        )
+
+        return response.json()

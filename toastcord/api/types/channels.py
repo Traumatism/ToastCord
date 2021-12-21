@@ -1,30 +1,30 @@
 import re
 
 from dataclasses import dataclass
-from typing import List
+from typing import List, Union
 
 from .user import User
-from .message import Message
-from ..http import HTTPClient
+from .message import Message, ToastBotMessage
+from ..http import AsyncHTTPClient
 
 PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"
 
-http_client = HTTPClient()
+http_client = AsyncHTTPClient()
 
 
 @dataclass
 class Channel:
     """ A channel """
     id: int
-    messages: List[Message]
+    messages: List[Union[Message, ToastBotMessage]]
 
     def __init__(self) -> None:
         if not issubclass(self.__class__, (GuildChannel, MessageChannel)):
-            raise NotImplementedError('you cannot instantiate this class')
+            raise NotImplementedError("you cannot instantiate this class")
 
     async def send_message(self, message: str):
         """ Send a message to the user """
-        http_client.post(
+        await http_client.post(
             f"/channels/{self.id}/messages",
             data={"content": message, "tts": False}
         )
@@ -33,7 +33,7 @@ class Channel:
         """ Load channel messages """
         self.messages = []
 
-        response = http_client.get(
+        response = await http_client.get(
             f"/channels/{self.id}/messages?limit={limit}"
         )
 

@@ -10,8 +10,11 @@ from rich.text import Text
 from rich.console import RenderableType
 
 from toastcord import client
-from toastcord.widgets.messages import Click
-from toastcord.api.types.guild import Guild
+from toastcord.widgets.messages import ChannelChanged, Click
+
+from toastcord.api.types import (
+    Guild, Channel
+)
 
 LOGO = Text("@", style="blue")
 
@@ -76,15 +79,11 @@ class Sidebar(TreeControl):
 
         for direct_message in client.channels:
             await self.root.children[0].add(
-                direct_message.recipient.username,
-                data=direct_message
+                direct_message.recipient.username, data=direct_message
             )
 
         for guild in client.guilds:
-            await self.root.children[1].add(
-                str(guild.name),
-                data=guild
-            )
+            await self.root.children[1].add(str(guild.name), data=guild)
 
         self.refresh(layout=True)
 
@@ -103,5 +102,9 @@ class Sidebar(TreeControl):
                     await message.node.add(channel.name, channel)
 
             await message.node.toggle()
+
+        if isinstance(message.node.data, Channel):
+            client.selected_channel = message.node.data
+            await self.emit(ChannelChanged(self))
 
         await self.emit(Click(self, message.node.data))

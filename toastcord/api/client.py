@@ -1,12 +1,13 @@
 from typing import Iterable, Union
 
-from .http import HTTPClient
+from .http import HTTPClient, AsyncHTTPClient
 
 from .types.user import User
 from .types.guild import Guild
 from .types.channels import MessageChannel, Channel
 
 http_client = HTTPClient()
+async_http_client = AsyncHTTPClient()
 
 
 class Client:
@@ -16,7 +17,11 @@ class Client:
         self.selected_channel: Union[Channel, None] = None
 
     def initalize(self):
-        self.user = self.__user
+        try:
+            self.user = self.__user
+        except KeyError:
+            return False
+        return True
 
     @property
     def guilds(self) -> Iterable[Guild]:

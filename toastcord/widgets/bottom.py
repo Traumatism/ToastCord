@@ -60,14 +60,11 @@ class Bottom(Widget):
         if key == "ctrl+h":
             self.user_input = self.user_input[:-1]
 
-        if key == "crtl+w":
-            self.user_input = self.user_input[:-4]
-
         elif key == "enter":
             await client.selected_channel.send_message(self.user_input)
             self.user_input = ""  # flush input
             await self.emit(MessageSent(self))
         else:
-            self.user_input += key
+            self.user_input += key if len(key) == 1 else ""
 
         self.refresh(layout=True)
