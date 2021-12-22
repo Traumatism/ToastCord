@@ -5,7 +5,7 @@ from typing import Union
 from textual.message import Message, MessageTarget
 
 from toastcord.api.types.guild import Guild
-from toastcord.api.types.channels import Channel, GuildChannel
+from toastcord.api.types.channels import Channel, GuildChannel, MessageChannel
 
 
 @rich.repr.auto
@@ -14,7 +14,7 @@ class Click(Message, bubble=True):
 
     def __init__(
         self, sender: MessageTarget,
-        target: Union[Guild, Channel, GuildChannel]
+        target: Union[Guild, Channel, GuildChannel, MessageChannel]
     ) -> None:
         self.target = target
         super().__init__(sender)

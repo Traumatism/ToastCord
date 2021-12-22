@@ -16,6 +16,7 @@ class Header(Widget):
         table = Table.grid(padding=(0, 1), expand=True)
 
         table.add_column(justify="left", ratio=0, width=20)
+
         table.add_column("title", justify="center", ratio=20)
         table.add_column("clock", justify="right", width=20)
 

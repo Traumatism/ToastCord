@@ -1,46 +1,36 @@
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import AsyncIterable
 
-from .channels import GuildChannel
-from ..http import AsyncHTTPClient
+from toastcord.api.types import DiscordObject
+from toastcord.api.types.channels import GuildChannel
+from toastcord.api.http import AsyncHTTPClient
 
 
 @dataclass
-class Guild:
+class Guild(DiscordObject):
     """ A guild """
 
-    id: int
     name: str
-    channels: List[GuildChannel]
-
     description: str = ""
 
     owner_id: int = -1
     count: int = -1
 
-    async def load_informations(self) -> Tuple[str, str, int, int]:
+    async def load_informations(self):
         """ Load guild informations """
         response = await AsyncHTTPClient.get(f"/guilds/{self.id}")
 
         self.description = response["description"]
         self.owner_id = response["owner_id"]
 
-        return self.description, self.owner_id, self.count, self.count
-
-    async def load_channels(self) -> List[GuildChannel]:
+    async def load_channels(self) -> AsyncIterable[GuildChannel]:
         """ Load channels """
-        self.channels = []
         response = await AsyncHTTPClient.get(f"/guilds/{self.id}/channels")
 
         for channel in response:
             if channel["type"] != 0:
                 continue
 
-            self.channels.append(GuildChannel(
+            yield GuildChannel(
                 id=channel["id"], name=channel["name"], messages=[],
-            ))
-
-        return self.channels
-
-    def __hash__(self) -> int:
-        return int(self.id)
+            )

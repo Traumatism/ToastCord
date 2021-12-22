@@ -3,9 +3,7 @@ import aiohttp
 
 from typing import Dict
 
-from ..arguments import arguments
-
-BASE = "%(backend)s/%(version)s"
+from toastcord.arguments import arguments
 
 HEADERS = {
     "Authorization": arguments.token,
@@ -17,7 +15,10 @@ full_url = (
     if not arguments.api_backend.endswith('/') else arguments.api_backend[:-1]
 )
 
-API_BACKEND = BASE % {"version": arguments.api_version, "backend": full_url}
+API_BACKEND = (
+    "%(backend)s/%(version)s"
+    % {"version": arguments.api_version, "backend": full_url}
+)
 
 
 class HTTPClient:
@@ -50,7 +51,9 @@ class AsyncHTTPClient:
         """ Get data from the API """
         async with aiohttp.ClientSession() as session:
             async with session.get(
-                API_BACKEND + endpoint, headers=HEADERS, params=params
+                API_BACKEND + endpoint,
+                headers=HEADERS,
+                params=params
             ) as response:
                 return await response.json()
 
@@ -62,6 +65,8 @@ class AsyncHTTPClient:
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 API_BACKEND + endpoint,
-                headers=HEADERS, params=params, data=data
+                headers=HEADERS,
+                params=params,
+                data=data
             ) as response:
                 return await response.json()

@@ -1,12 +1,11 @@
 from dataclasses import dataclass
-
-from .user import User
+from toastcord.api.types import DiscordObject
+from toastcord.api.types.user import User
 
 
 @dataclass
-class Message:
+class Message(DiscordObject):
     """ A message """
-    id: int
     author: User
     content: str
     timestamp: str

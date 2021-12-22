@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     console.log("Client initialized!")
 
-    console.log("Running temrinal UI...")
+    console.log("Running terminal UI...")
 
     MainWindow.run(
         console,

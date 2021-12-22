@@ -30,14 +30,15 @@ class Input(Widget):
         if isinstance(client.selected_channel, GuildChannel):
             panel.title = (
                 "[bright_black]"
-                f"#{client.selected_channel.name}"
+                f"# {client.selected_channel.name}"
                 "[/bright_black]"
             )
 
         if isinstance(client.selected_channel, MessageChannel):
             panel.title = (
                 "[bright_black]"
-                f"{client.selected_channel.recipient}"
+                f"@ {client.selected_channel.recipient} "
+                f"({client.selected_channel.recipient.id})"
                 "[/bright_black]"
             )
 

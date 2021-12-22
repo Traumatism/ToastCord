@@ -4,24 +4,27 @@ from rich.markup import escape
 
 from dataclasses import dataclass
 
-from typing import List, Union
+from typing import AsyncIterable, List, Union
 
-from .user import User
-from .message import Message, ToastBotMessage
-from ..http import AsyncHTTPClient
+from toastcord.api.types import DiscordObject
+from toastcord.api.types.user import User
+from toastcord.api.types.message import Message, ToastBotMessage
+from toastcord.api.http import AsyncHTTPClient
 
 PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"
 
 
 @dataclass
-class Channel:
+class Channel(DiscordObject):
     """ A channel """
-    id: int
     messages: List[Union[Message, ToastBotMessage]]
 
     def __init__(self) -> None:
         if not issubclass(self.__class__, (GuildChannel, MessageChannel)):
             raise NotImplementedError("you cannot instantiate this class")
+
+    def __hash__(self) -> int:
+        return self.id
 
     async def send_message(self, message: str):
         """ Send a message to the user """
@@ -29,10 +32,8 @@ class Channel:
             f"/channels/{self.id}/messages", data={"content": message}
         )
 
-    async def load_messages(self, limit: int = 100):
+    async def load_messages(self, limit: int = 100) -> AsyncIterable[Message]:
         """ Load channel messages """
-        self.messages = []
-
         response = await AsyncHTTPClient.get(
             f"/channels/{self.id}/messages?limit={limit}"
         )
@@ -51,12 +52,12 @@ class Channel:
             if parsed_timestamp is None:
                 continue
 
-            self.messages.append(Message(
+            yield Message(
                 id=message["id"], author=author,
                 content=escape(message["content"]),
                 timestamp=parsed_timestamp.group("hour"),
                 date=parsed_timestamp.group("date")
-            ))
+            )
 
 
 @dataclass

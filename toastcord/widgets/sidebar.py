@@ -36,8 +36,7 @@ class Sidebar(TreeControl):
 
     @lru_cache(maxsize=1024 * 32)
     def render_tree_label(
-        self, node: TreeNode, is_hover: bool,
-        is_cursor: bool, has_focus: bool, expanded: bool
+        self, node: TreeNode, is_cursor: bool, expanded: bool
     ) -> RenderableType:
 
         meta = {
@@ -70,11 +69,7 @@ class Sidebar(TreeControl):
 
     def render_node(self, node: TreeNode) -> RenderableType:
         return self.render_tree_label(
-            node,
-            node.is_cursor,
-            node.id == self.hover_node,
-            self.has_focus,
-            node.expanded
+            node, node.id == self.hover_node, node.expanded
         )
 
     async def on_mount(self) -> None:
@@ -82,14 +77,12 @@ class Sidebar(TreeControl):
         await self.root.add("Guilds", data=2)
         await self.root.add("Manage friends", data=3)
 
-        channels = await client.channels_async()
-
-        for direct_message in channels:
+        async for direct_message in client.channels_async():
             await self.root.children[0].add(
                 direct_message.recipient.username, data=direct_message
             )
 
-        for guild in client.guilds:
+        async for guild in client.guilds_async():
             await self.root.children[1].add(str(guild.name), data=guild)
 
         self.refresh(layout=True)
@@ -101,11 +94,9 @@ class Sidebar(TreeControl):
             return self.refresh()
 
         if isinstance(message.node.data, Guild):
-            await message.node.data.load_channels()
-
             ids = (node.data.id for node in message.node.children)
 
-            for channel in message.node.data.channels:
+            async for channel in message.node.data.load_channels():
                 if channel.id not in ids:
                     await message.node.add(channel.name, channel)
 

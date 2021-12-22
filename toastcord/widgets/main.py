@@ -1,7 +1,7 @@
 from rich.columns import Columns
 from rich.panel import Panel
 
-from typing import List
+from typing import AsyncIterable
 
 from textual.app import App
 from textual.widgets import ScrollView
@@ -24,7 +24,7 @@ from toastcord.widgets.messages import (
 )
 
 from toastcord.api.types.guild import Guild
-from toastcord.api.types.message import ToastBotMessage
+from toastcord.api.types.message import Message, ToastBotMessage
 from toastcord.api.types.channels import Channel
 
 
@@ -64,25 +64,27 @@ class MainWindow(App):
     async def action_update_messages(self) -> None:
         await self.update_messages()
 
-    async def parse_messages(self) -> List[Panel]:
+    async def parse_messages(
+        self
+    ) -> AsyncIterable[Panel]:
 
         if client.selected_channel is None:
-            return []
+            yield render_toastbot_message(
+                ToastBotMessage("Please select a channel!")
+            )
+            return
 
-        await client.selected_channel.load_messages()
-
-        return [
-            render_toastbot_message(message)
-            if isinstance(message, ToastBotMessage)
-            else render_message(message)
-            for message in client.selected_channel.messages
-        ]
+        async for message in client.selected_channel.load_messages():
+            yield (
+                render_message(message) if isinstance(message, Message)
+                else render_toastbot_message(message)
+            )
 
     async def update_messages(self) -> None:
         if client.selected_channel is None:
             return
 
-        columns = await self.parse_messages()
+        columns = [panel async for panel in self.parse_messages()]
 
         await self.body.update(Columns(columns, align="left"))
 
