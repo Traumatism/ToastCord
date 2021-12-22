@@ -5,6 +5,7 @@ from typing import Dict
 
 from toastcord.arguments import arguments
 
+
 HEADERS = {
     "Authorization": arguments.token,
     "User-Agent": arguments.user_agent

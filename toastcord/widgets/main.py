@@ -10,9 +10,8 @@ from toastcord import (
     WELCOME_SCREEN, client
 )
 
-from toastcord.utils.message import (
-    render_message, render_toastbot_message
-)
+from toastcord.utils.message import render_auto
+
 from toastcord.utils.panel import get_panel
 
 from toastcord.widgets.header import Header
@@ -24,7 +23,6 @@ from toastcord.widgets.messages import (
 )
 
 from toastcord.api.types.guild import Guild
-from toastcord.api.types.message import Message, ToastBotMessage
 from toastcord.api.types.channels import Channel
 
 
@@ -52,6 +50,7 @@ class MainWindow(App):
         await self.bind("r", "update_messages")
 
     async def on_message(self, message) -> None:
+        """ Handle messages """
         if isinstance(message, MessageSent):
             await self.update_messages()
 
@@ -62,25 +61,19 @@ class MainWindow(App):
             self.bottom.refresh()
 
     async def action_update_messages(self) -> None:
+        """ Update the messages in the chat window """
         await self.update_messages()
 
-    async def parse_messages(
-        self
-    ) -> AsyncIterable[Panel]:
-
+    async def parse_messages(self) -> AsyncIterable[Panel]:
+        """ Parse the messages in the channel """
         if client.selected_channel is None:
-            yield render_toastbot_message(
-                ToastBotMessage("Please select a channel!")
-            )
             return
 
         async for message in client.selected_channel.load_messages():
-            yield (
-                render_message(message) if isinstance(message, Message)
-                else render_toastbot_message(message)
-            )
+            yield render_auto(message)
 
     async def update_messages(self) -> None:
+        """ Update the messages in the chat window """
         if client.selected_channel is None:
             return
 
@@ -89,7 +82,7 @@ class MainWindow(App):
         await self.body.update(Columns(columns, align="left"))
 
     async def handle_click(self, message: Click) -> None:
-
+        """ Handle a click event """
         if not isinstance(message.target, (Channel, Guild)):
             return
 

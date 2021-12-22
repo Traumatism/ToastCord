@@ -39,5 +39,6 @@ Needing help or having issues ? Message me on Discord: `toast#3108` !
 - Add profile lookup
 - "Infinite" conversations loading (from the last message to the first, progressively)
 - Move around with keyboard
+- Complete scripting engine / external API using
 
 👉 This is being updated, don't forget to `git fetch` and `git pull` regularly.

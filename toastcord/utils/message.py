@@ -1,5 +1,7 @@
 import os
 
+from typing import Union
+
 from toastcord import client
 from toastcord.utils.panel import get_panel
 from toastcord.api.types.message import Message, ToastBotMessage
@@ -43,3 +45,12 @@ def render_message(message: Message):
     panel.expand = True
 
     return panel
+
+
+def render_auto(message: Union[Message, ToastBotMessage]):
+    """ Render message """
+
+    if isinstance(message, Message):
+        return render_message(message)
+
+    return render_toastbot_message(message)

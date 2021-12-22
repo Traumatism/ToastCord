@@ -1,5 +1,7 @@
 from typing import AsyncIterable, Iterable, Union
 
+from toastcord.arguments import arguments
+
 from .http import HTTPClient, AsyncHTTPClient
 
 from .types.user import User
@@ -10,8 +12,9 @@ from .types.channels import MessageChannel, Channel
 class Client:
     """ A minimalist Discord API wrapper """
 
-    def __init__(self) -> None:
+    def __init__(self, token: str = arguments.token) -> None:
         self.selected_channel: Union[Channel, None] = None
+        self.token = token
 
     def initalize(self):
         try:
