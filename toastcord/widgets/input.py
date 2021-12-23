@@ -8,7 +8,7 @@ from typing import Union
 from textual.widget import Widget
 
 from toastcord.utils.panel import get_panel
-from toastcord.widgets.messages import MessageSent
+from toastcord.utils.messages import MessageSent
 from toastcord.api.types.channels import GuildChannel, MessageChannel
 
 

@@ -10,7 +10,7 @@ from rich.console import RenderableType
 
 from toastcord.api.types.guild import Guild
 from toastcord.api.types.channels import Channel
-from toastcord.widgets.messages import ChannelChanged, Click
+from toastcord.utils.messages import ChannelChanged, Click
 
 LOGO = Text("ToastCord", style="blue")
 
@@ -49,13 +49,13 @@ class Sidebar(TreeControl):
             if isinstance(node.label, str) else node.label
         )
 
-        icon = "# " if isinstance(node.data, Channel) else "@ "
-
         if is_cursor:
             label.stylize("bold cyan")
 
         if expanded:
             label.stylize("bold")
+
+        icon = ("#" if isinstance(node.data, Channel) else "@") + " "
 
         icon_label = (
             Text(icon, no_wrap=True, overflow="ellipsis", style="bright_black")
@@ -93,7 +93,7 @@ class Sidebar(TreeControl):
             return self.refresh()
 
         if isinstance(message.node.data, Guild):
-            ids = (hash(node.data) for node in message.node.children)
+            ids = (node.data.id for node in message.node.children)
 
             async for channel in message.node.data.load_channels():
                 if channel.id not in ids:

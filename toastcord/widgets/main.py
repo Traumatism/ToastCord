@@ -10,7 +10,7 @@ from toastcord.widgets.header import Header
 from toastcord.widgets.sidebar import Sidebar
 from toastcord.widgets.messagesbox import MessagesBox
 
-from toastcord.widgets.messages import (
+from toastcord.utils.messages import (
     ChannelChanged, Click, MessageSent
 )
 
