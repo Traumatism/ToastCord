@@ -1,7 +1,5 @@
 import toastcord
 
-from functools import lru_cache
-
 from textual.widgets import TreeClick, TreeControl, TreeNode
 from textual.reactive import Reactive
 
@@ -33,7 +31,6 @@ class Sidebar(TreeControl):
     def on_blur(self) -> None:
         self.has_focus = False
 
-    @lru_cache(maxsize=1024 * 32)
     def render_tree_label(
         self, node: TreeNode, is_cursor: bool, expanded: bool
     ) -> RenderableType:
@@ -93,7 +90,7 @@ class Sidebar(TreeControl):
             return self.refresh()
 
         if isinstance(message.node.data, Guild):
-            ids = (node.data.id for node in message.node.children)
+            ids = {node.data.id for node in message.node.children}
 
             async for channel in message.node.data.load_channels():
                 if channel.id not in ids:
