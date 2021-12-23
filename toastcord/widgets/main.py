@@ -1,19 +1,14 @@
-from rich.columns import Columns
-from rich.panel import Panel
-
-from typing import AsyncIterable
-
 from textual.app import App
 from textual.widgets import ScrollView
 
-from toastcord import WELCOME_SCREEN, client
+from toastcord import WELCOME_SCREEN
 
 from toastcord.utils.panel import get_panel
-from toastcord.utils.message import render_auto
 
 from toastcord.widgets.input import Input
 from toastcord.widgets.header import Header
 from toastcord.widgets.sidebar import Sidebar
+from toastcord.widgets.messagesbox import MessagesBox
 
 from toastcord.widgets.messages import (
     ChannelChanged, Click, MessageSent
@@ -28,16 +23,13 @@ class MainWindow(App):
     async def on_mount(self) -> None:
 
         # body, the messages contents will be displayed here
-        self.body = ScrollView(WELCOME_SCREEN)
+        self.body = MessagesBox(WELCOME_SCREEN)
 
         # sidebar, channels, guilds and friends will be displayed here
         self.sidebar = ScrollView(Sidebar(), name="sidebar")
 
         # Box where the user can type
         self.input = Input()
-
-        self.body.name = ""
-        self.sidebar.name = ""
 
         await self.view.dock(Header(), edge="top", size=3)
 
@@ -49,12 +41,13 @@ class MainWindow(App):
         await self.view.dock(self.body, edge="top")
 
         await self.bind("r", "update_messages")
+        await self.bind("s", "toggle_sidebar")
         await self.bind("q", "quit")
 
     async def on_message(self, message) -> None:
         """ Handle messages """
         if isinstance(message, MessageSent):
-            await self.update_messages()
+            await self.body.render()
 
         if isinstance(message, Click):
             await self.handle_click(message)
@@ -64,24 +57,7 @@ class MainWindow(App):
 
     async def action_update_messages(self) -> None:
         """ Update the messages in the chat window """
-        await self.update_messages()
-
-    async def parse_messages(self) -> AsyncIterable[Panel]:
-        """ Parse the messages in the channel """
-        if client.selected_channel is None:
-            return
-
-        async for message in client.selected_channel.load_messages():
-            yield render_auto(message)
-
-    async def update_messages(self) -> None:
-        """ Update the messages in the chat window """
-        if client.selected_channel is None:
-            return
-
-        columns = [panel async for panel in self.parse_messages()]
-
-        await self.body.update(Columns(columns, align="left"))
+        await self.body.render()
 
     async def handle_click(self, message: Click) -> None:
         """ Handle a click event """
@@ -96,4 +72,4 @@ class MainWindow(App):
 
             return self.refresh()
 
-        await self.update_messages()
+        await self.body.render()

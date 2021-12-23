@@ -1,3 +1,5 @@
+import toastcord
+
 from functools import lru_cache
 
 from textual.widgets import TreeClick, TreeControl, TreeNode
@@ -6,11 +8,8 @@ from textual.reactive import Reactive
 from rich.text import Text
 from rich.console import RenderableType
 
-from toastcord import client
-
 from toastcord.api.types.guild import Guild
 from toastcord.api.types.channels import Channel
-
 from toastcord.widgets.messages import ChannelChanged, Click
 
 LOGO = Text("ToastCord", style="blue")
@@ -77,12 +76,12 @@ class Sidebar(TreeControl):
         await self.root.add("Guilds", data=2)
         await self.root.add("Manage friends", data=3)
 
-        async for direct_message in client.channels_async():
+        async for direct_message in toastcord.client.channels_async():
             await self.root.children[0].add(
                 direct_message.recipient.username, data=direct_message
             )
 
-        async for guild in client.guilds_async():
+        async for guild in toastcord.client.guilds_async():
             await self.root.children[1].add(str(guild.name), data=guild)
 
         self.refresh(layout=True)
@@ -94,7 +93,7 @@ class Sidebar(TreeControl):
             return self.refresh()
 
         if isinstance(message.node.data, Guild):
-            ids = (node.data.id for node in message.node.children)
+            ids = (hash(node.data) for node in message.node.children)
 
             async for channel in message.node.data.load_channels():
                 if channel.id not in ids:
@@ -103,7 +102,7 @@ class Sidebar(TreeControl):
             await message.node.toggle()
 
         if isinstance(message.node.data, Channel):
-            client.selected_channel = message.node.data
+            toastcord.client.selected_channel = message.node.data
             await self.emit(ChannelChanged(self))
 
         await self.emit(Click(self, message.node.data))

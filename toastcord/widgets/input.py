@@ -20,7 +20,6 @@ class Input(Widget):
         self.user_input = ""
 
     def render(self) -> RenderableType:
-
         if toastcord.client.selected_channel is None:
             return ""
 

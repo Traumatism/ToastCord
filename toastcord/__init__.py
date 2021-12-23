@@ -53,25 +53,31 @@ from .api.client import Client
 
 client = Client()
 
-WELCOME_SCREEN = """
-
-[blue]  ╔╦╗╔═╗╔═╗╔═╗╔╦╗[/blue]  ┌─┐┌─┐┬─┐┌┬┐[blue bold]  #####[/blue bold] [bold white]< want some toast?[/bold white]
-[blue]   ║ ║ ║╠═╣╚═╗ ║[/blue]   │  │ │├┬┘ ││[blue bold] ##[bold white]@[/bold white]#[bold white]@[/bold white]##[/blue bold]
-[blue]   ╩ ╚═╝╩ ╩╚═╝ ╩[/blue]   └─┘└─┘┴└┘└┴┘[blue bold]  ## ##[/blue bold]
+WELCOME_SCREEN = """[blue][bold]
+ ╔╦╗╔═╗╔═╗╔═╗╔╦╗ [white]┌─┐┌─┐┬─┐┌┬┐[/white]
+  ║ ║ ║╠═╣╚═╗ ║  [white]│  │ │├┬┘ ││[/white]
+  ╩ ╚═╝╩ ╩╚═╝ ╩  [white]└─┘└─┘┴└┘└┴┘[/white]
+[/blue][/bold]
 
   Discord client for nerds
   Developed by [magenta]toast#3108[/magenta]
 
-  - https://t.me/toastakerman
-  - https://github.com/traumatism
-  - https://twitter.com/toastakerman
+  Mail      > cpastoast@protonmail.com
+  Telegram  > toastakerman
+  GitHub    > traumatism
+  Twitter   > toastakerman
 
-  - This is a beta version. Bug reports and feature requests
-    are welcome at @toastakerman.
-  - This might be agains't the Discord TOS,
-    see https://discord.com/terms.
+  This is a beta version. Bug reports and feature requests
+  are welcome at @toastakerman.
 
-  - This is still being developed. Don't forget to [code]git fetch[/code]
-    and [code]git pull[/code] regularly.
+  This might be agains't the Discord TOS,
+  see https://discord.com/terms.
+
+  This is still being developed. Don't forget to [code]git fetch[/code]
+  and [code]git pull[/code] regularly.
+
+  Keybinds:
+    - r > Refresh the messages in the selected channel
+    - q > Exit ToastCord
 
 """
