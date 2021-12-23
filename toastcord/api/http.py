@@ -3,22 +3,22 @@ import aiohttp
 
 from typing import Dict
 
-from toastcord.arguments import arguments
+import toastcord
 
 
 HEADERS = {
-    "Authorization": arguments.token,
-    "User-Agent": arguments.user_agent
+    "Authorization": toastcord.TOKEN,
+    "User-Agent": toastcord.USER_AGENT
 }
 
 full_url = (
-    arguments.api_backend
-    if not arguments.api_backend.endswith('/') else arguments.api_backend[:-1]
+    toastcord.API_BACKEND
+    if not toastcord.API_BACKEND.endswith('/') else toastcord.API_BACKEND[:-1]
 )
 
 API_BACKEND = (
     "%(backend)s/%(version)s"
-    % {"version": arguments.api_version, "backend": full_url}
+    % {"version": toastcord.API_VERSION, "backend": full_url}
 )
 
 

@@ -32,5 +32,5 @@ class Guild(DiscordObject):
                 continue
 
             yield GuildChannel(
-                id=channel["id"], name=channel["name"], messages=[],
+                id=channel["id"], name=channel["name"], messages=[]
             )

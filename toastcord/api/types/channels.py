@@ -23,11 +23,9 @@ class Channel(DiscordObject):
         if not issubclass(self.__class__, (GuildChannel, MessageChannel)):
             raise NotImplementedError("you cannot instantiate this class")
 
-    def __hash__(self) -> int:
-        return self.id
-
     async def send_message(self, message: str):
         """ Send a message to the user """
+
         await AsyncHTTPClient.post(
             f"/channels/{self.id}/messages", data={"content": message}
         )

@@ -1,4 +1,5 @@
 import os
+import toastcord
 
 from rich.console import RenderableType
 
@@ -6,7 +7,6 @@ from typing import Union
 
 from textual.widget import Widget
 
-from toastcord import client
 from toastcord.utils.panel import get_panel
 from toastcord.widgets.messages import MessageSent
 from toastcord.api.types.channels import GuildChannel, MessageChannel
@@ -21,24 +21,24 @@ class Input(Widget):
 
     def render(self) -> RenderableType:
 
-        if client.selected_channel is None:
+        if toastcord.client.selected_channel is None:
             return ""
 
         panel = get_panel()
         panel.border_style = "cyan"
 
-        if isinstance(client.selected_channel, GuildChannel):
+        if isinstance(toastcord.client.selected_channel, GuildChannel):
             panel.title = (
                 "[bright_black]"
-                f"# {client.selected_channel.name}"
+                f"# {toastcord.client.selected_channel.name}"
                 "[/bright_black]"
             )
 
-        if isinstance(client.selected_channel, MessageChannel):
+        if isinstance(toastcord.client.selected_channel, MessageChannel):
             panel.title = (
                 "[bright_black]"
-                f"@ {client.selected_channel.recipient} "
-                f"({client.selected_channel.recipient.id})"
+                f"@ {toastcord.client.selected_channel.recipient} "
+                f"({toastcord.client.selected_channel.recipient.id})"
                 "[/bright_black]"
             )
 
@@ -58,14 +58,16 @@ class Input(Widget):
         except AttributeError:
             return
 
-        if client.selected_channel is None:
+        if toastcord.client.selected_channel is None:
             return
 
         if key == "ctrl+h":
             self.user_input = self.user_input[:-1]
 
         elif key == "enter":
-            await client.selected_channel.send_message(self.user_input)
+            await toastcord.client.selected_channel.send_message(
+                self.user_input
+            )
             self.user_input = ""  # flush input
             await self.emit(MessageSent(self))
         else:

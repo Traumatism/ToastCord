@@ -18,7 +18,7 @@ LOGO = Text("ToastCord", style="blue")
 
 class Sidebar(TreeControl):
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, name: str = "sidebar") -> None:
         super().__init__(LOGO, name=name, data=0)
 
         self.root.tree.guide_style = "black"

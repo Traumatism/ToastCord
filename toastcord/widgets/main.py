@@ -6,16 +6,13 @@ from typing import AsyncIterable
 from textual.app import App
 from textual.widgets import ScrollView
 
-from toastcord import (
-    WELCOME_SCREEN, client
-)
-
-from toastcord.utils.message import render_auto
+from toastcord import WELCOME_SCREEN, client
 
 from toastcord.utils.panel import get_panel
+from toastcord.utils.message import render_auto
 
-from toastcord.widgets.header import Header
 from toastcord.widgets.input import Input
+from toastcord.widgets.header import Header
 from toastcord.widgets.sidebar import Sidebar
 
 from toastcord.widgets.messages import (
@@ -30,9 +27,14 @@ class MainWindow(App):
 
     async def on_mount(self) -> None:
 
+        # body, the messages contents will be displayed here
         self.body = ScrollView(WELCOME_SCREEN)
-        self.sidebar = ScrollView(Sidebar())
-        self.bottom = Input()
+
+        # sidebar, channels, guilds and friends will be displayed here
+        self.sidebar = ScrollView(Sidebar(), name="sidebar")
+
+        # Box where the user can type
+        self.input = Input()
 
         self.body.name = ""
         self.sidebar.name = ""
@@ -43,11 +45,11 @@ class MainWindow(App):
             self.sidebar, edge="left", name="sidebar", size=40
         )
 
-        await self.view.dock(self.bottom, edge="bottom", size=10)
-
+        await self.view.dock(self.input, edge="bottom", size=10)
         await self.view.dock(self.body, edge="top")
 
         await self.bind("r", "update_messages")
+        await self.bind("q", "quit")
 
     async def on_message(self, message) -> None:
         """ Handle messages """
@@ -58,7 +60,7 @@ class MainWindow(App):
             await self.handle_click(message)
 
         if isinstance(message, ChannelChanged):
-            self.bottom.refresh()
+            self.input.refresh()
 
     async def action_update_messages(self) -> None:
         """ Update the messages in the chat window """

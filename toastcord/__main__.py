@@ -15,7 +15,7 @@ if __name__ == "__main__":
         console.log("Failed to initalize client, is the token correct?")
         exit()
 
-    console.log("Client initialized!")
+    console.log(f"Client initialized! Logged in as {client.user}")
 
     console.log("Running terminal UI...")
 

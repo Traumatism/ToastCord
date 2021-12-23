@@ -9,4 +9,5 @@ class User(DiscordObject):
     discriminator: int
 
     def __str__(self) -> str:
+        """ Returns the full username of the user """
         return f"{self.username}#{self.discriminator}"

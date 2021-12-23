@@ -1,3 +1,5 @@
+import toastcord
+
 from datetime import datetime
 
 from rich.console import RenderableType
@@ -5,7 +7,6 @@ from rich.table import Table
 
 from textual.widget import Widget
 
-from toastcord import client, version
 from toastcord.utils.panel import get_panel
 
 
@@ -21,7 +22,8 @@ class Header(Widget):
         table.add_column("clock", justify="right", width=20)
 
         table.add_row(
-            str(client.user), f"[italic]ToastCord v{version}[/italic]",
+            str(toastcord.client.user),
+            f"[italic]ToastCord v{toastcord.VERSION}[/italic]",
             datetime.now().time().strftime("%X")
         )
 
