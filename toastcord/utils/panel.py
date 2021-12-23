@@ -6,5 +6,6 @@ def get_panel() -> Panel:
     return Panel(
         renderable="",
         box=ROUNDED,
-        border_style="cyan"
+        border_style="cyan",
+        highlight=True,
     )

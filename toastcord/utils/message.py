@@ -1,8 +1,8 @@
 import os
+import toastcord
 
 from typing import Union
 
-from toastcord import client
 from toastcord.utils.panel import get_panel
 from toastcord.api.types.message import Message, ToastBotMessage
 
@@ -41,7 +41,9 @@ def render_message(message: Message):
 
     panel.title = title
     panel.title_align = "left"
-    panel.border_style = "blue" if message.author == client.user else "cyan"
+    panel.border_style = (
+        "blue" if message.author == toastcord.client.user else "cyan"
+    )
     panel.expand = True
 
     return panel

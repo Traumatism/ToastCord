@@ -52,7 +52,7 @@ class Channel(DiscordObject):
 
             yield Message(
                 id=message["id"], author=author,
-                content=escape(message["content"]),
+                content=message["content"],
                 timestamp=parsed_timestamp.group("hour"),
                 date=parsed_timestamp.group("date")
             )
