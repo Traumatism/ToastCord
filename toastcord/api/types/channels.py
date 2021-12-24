@@ -4,11 +4,11 @@ from rich.markup import escape
 
 from dataclasses import dataclass
 
-from typing import AsyncIterable, List, Union
+from typing import AsyncIterable, List
 
 from toastcord.api.types import DiscordObject
 from toastcord.api.types.user import User
-from toastcord.api.types.message import Message, ToastBotMessage
+from toastcord.api.types.message import Message
 from toastcord.api.http import AsyncHTTPClient
 
 PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"
@@ -17,7 +17,7 @@ PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"
 @dataclass
 class Channel(DiscordObject):
     """ A channel """
-    messages: List[Union[Message, ToastBotMessage]]
+    messages: List[Message]
 
     def __init__(self) -> None:
         if not issubclass(self.__class__, (GuildChannel, MessageChannel)):

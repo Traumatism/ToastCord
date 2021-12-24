@@ -2,11 +2,10 @@ import toastcord
 
 from typing import AsyncIterable, Iterable, Union
 
-from .http import HTTPClient, AsyncHTTPClient
-
-from .types.user import User
-from .types.guild import Guild
-from .types.channels import MessageChannel, Channel
+from toastcord.api.http import HTTPClient, AsyncHTTPClient
+from toastcord.api.types.user import User
+from toastcord.api.types.guild import Guild
+from toastcord.api.types.channels import MessageChannel, Channel
 
 
 class Client:
@@ -39,10 +38,7 @@ class Client:
         response = HTTPClient.get("/users/@me/guilds")
 
         for guild in response:
-            yield Guild(
-                id=guild["id"],
-                name=guild["name"]
-            )
+            yield Guild(id=guild["id"], name=guild["name"])
 
     async def channels_async(self) -> AsyncIterable[MessageChannel]:
         """ Get all channels asynchronously """

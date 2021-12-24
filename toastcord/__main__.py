@@ -2,7 +2,7 @@ import toastcord
 
 from rich.console import Console
 
-from toastcord.utils.highlighter import DiscordHighlighter, theme
+from toastcord.utils.highlighter import theme
 from toastcord.widgets.main import MainWindow
 
 if __name__ == "__main__":

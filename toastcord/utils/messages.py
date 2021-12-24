@@ -5,7 +5,17 @@ from typing import Union
 from textual.message import Message, MessageTarget
 
 from toastcord.api.types.guild import Guild
+from toastcord.api.types.toasty.message import ToastyMessage
 from toastcord.api.types.channels import Channel, GuildChannel, MessageChannel
+
+
+@rich.repr.auto
+class ToastyMessage(Message, bubble=True):
+    """ Handle messages from Toasty"""
+
+    def __init__(self, sender: MessageTarget, message: ToastyMessage) -> None:
+        self.message = message
+        super().__init__(sender)
 
 
 @rich.repr.auto

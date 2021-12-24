@@ -2,11 +2,11 @@ from textual.app import App
 from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN
+from toastcord.api.types.toasty.message import ToastyMessage
 
 from toastcord.utils.panel import get_panel
 
 from toastcord.widgets.input import Input
-from toastcord.widgets.header import Header
 from toastcord.widgets.sidebar import Sidebar
 from toastcord.widgets.messagesbox import MessagesBox
 
@@ -26,15 +26,13 @@ class MainWindow(App):
         self.body = MessagesBox(WELCOME_SCREEN)
 
         # sidebar, channels, guilds and friends will be displayed here
-        self.sidebar = ScrollView(Sidebar(), name="sidebar")
+        self.sidebar = ScrollView(Sidebar())
 
         # Box where the user can type
         self.input = Input()
 
-        await self.view.dock(Header(), edge="top", size=3)
-
         await self.view.dock(
-            self.sidebar, edge="left", name="sidebar", size=40
+            self.sidebar, edge="left", size=30, name="sidebar"
         )
 
         await self.view.dock(self.input, edge="bottom", size=10)
@@ -55,9 +53,16 @@ class MainWindow(App):
         if isinstance(message, ChannelChanged):
             self.input.refresh()
 
+    async def action_toggle_sidebar(self) -> None:
+        """ Toggle the sidebar """
+        await self.view.action_toggle("sidebar")
+
     async def action_update_messages(self) -> None:
         """ Update the messages in the chat window """
         await self.body.render()
+
+    async def handle_toasty_message(self, message: ToastyMessage) -> None:
+        """ Handle messages from Toasty """
 
     async def handle_click(self, message: Click) -> None:
         """ Handle a click event """

@@ -1,27 +1,8 @@
 import os
 import toastcord
 
-from typing import Union
-
 from toastcord.utils.panel import get_panel
-from toastcord.api.types.message import Message, ToastBotMessage
-
-
-def render_toastbot_message(message: ToastBotMessage):
-    """ Render message from ToastBot """
-
-    panel = get_panel()
-
-    panel.renderable = (
-        message.content + "\n" + (" " * os.get_terminal_size().columns)
-    )
-
-    panel.title = "[red bold]👾 ToastBot [/red bold]"
-    panel.title_align = "left"
-    panel.border_style = "yellow"
-    panel.expand = True
-
-    return panel
+from toastcord.api.types.message import Message
 
 
 def render_message(message: Message):
@@ -47,12 +28,3 @@ def render_message(message: Message):
     panel.expand = True
 
     return panel
-
-
-def render_auto(message: Union[Message, ToastBotMessage]):
-    """ Render message """
-
-    if isinstance(message, Message):
-        return render_message(message)
-
-    return render_toastbot_message(message)

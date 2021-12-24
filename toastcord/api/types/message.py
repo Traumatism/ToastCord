@@ -10,9 +10,3 @@ class Message(DiscordObject):
     content: str
     timestamp: str
     date: str
-
-
-@dataclass
-class ToastBotMessage:
-    """ A message from ToastBot """
-    content: str

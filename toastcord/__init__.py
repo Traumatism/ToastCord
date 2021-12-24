@@ -78,6 +78,7 @@ WELCOME_SCREEN = """[blue][bold]
 
   Keybinds:
     - r > Refresh the messages in the selected channel
+    - s > Toggle the sidebar
     - q > Exit ToastCord
 
 """

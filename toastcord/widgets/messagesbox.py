@@ -7,7 +7,7 @@ from textual.widgets import ScrollView
 
 from toastcord import client
 
-from toastcord.utils.message import render_auto
+from toastcord.utils.message import render_message
 
 
 class MessagesBox(ScrollView):
@@ -25,4 +25,4 @@ class MessagesBox(ScrollView):
             return
 
         async for message in client.selected_channel.load_messages():
-            yield render_auto(message)
+            yield render_message(message)
