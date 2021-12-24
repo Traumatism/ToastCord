@@ -23,6 +23,10 @@ Needing help or having issues ? Message me on Discord: `toast#3108` !
     - Switch through guilds, channels and DMs with mouse
 - Send messages to guilds channels
 - Send messages to users
+- Keybinds
+    - r  _Refresh the messages in the selected channel_
+    - s  _Toggle the sidebar_
+    - q  _Exit ToastCord_
 
 ### Coding Features ⚙️
 
