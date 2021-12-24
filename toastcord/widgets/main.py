@@ -3,10 +3,10 @@ from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN
 from toastcord.api.types.toasty.message import ToastyMessage
-
 from toastcord.utils.panel import get_panel
 
 from toastcord.widgets.input import Input
+from toastcord.widgets.footer import Footer
 from toastcord.widgets.sidebar import Sidebar
 from toastcord.widgets.messagesbox import MessagesBox
 
@@ -31,6 +31,10 @@ class MainWindow(App):
         # Box where the user can type
         self.input = Input()
 
+        self.footer = Footer()
+
+        await self.view.dock(self.footer, edge="bottom")
+
         await self.view.dock(
             self.sidebar, edge="left", size=30, name="sidebar"
         )
@@ -38,9 +42,9 @@ class MainWindow(App):
         await self.view.dock(self.input, edge="bottom", size=10)
         await self.view.dock(self.body, edge="top")
 
-        await self.bind("r", "update_messages")
-        await self.bind("s", "toggle_sidebar")
-        await self.bind("q", "quit")
+        await self.bind("r", "update_messages", "Refresh messages")
+        await self.bind("s", "toggle_sidebar", "Toggle sidebar")
+        await self.bind("q", "quit", "Quit")
 
     async def on_message(self, message) -> None:
         """ Handle messages """

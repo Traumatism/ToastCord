@@ -18,7 +18,7 @@ http_options = parser.add_argument_group("HTTP Options")
 
 http_options.add_argument(
     "--user-agent",
-    default=f"toastcord/{VERSION}",
+    default=f"toastcord_love_discord_t0s/{VERSION}",
     help="User-Agent header",
     dest="user_agent",
     metavar="<value>"
