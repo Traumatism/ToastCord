@@ -13,18 +13,19 @@ class Footer(Footer):
             justify="left",
             end="",
         )
+
         for binding in self.app.bindings.shown_keys:
             key_display = (
                 binding.key.upper()
                 if binding.key_display is None
                 else binding.key_display
             )
+
             hovered = self.highlight_key == binding.key
+            s = "reverse" if hovered else "default on default"
+
             key_text = Text.assemble(
-                (
-                    f" {key_display} ",
-                    "reverse" if hovered else "default on default"
-                ),
+                f" {key_display} {s}"
                 f" {binding.description} ",
                 meta={
                     "@click": f"app.press('{binding.key}')",
