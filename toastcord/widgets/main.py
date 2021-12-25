@@ -31,6 +31,7 @@ class MainWindow(App):
         # Box where the user can type
         self.input = Input()
 
+        # Footer, the user can interact with it
         self.footer = Footer()
 
         await self.view.dock(self.footer, edge="bottom")
@@ -42,9 +43,9 @@ class MainWindow(App):
         await self.view.dock(self.input, edge="bottom", size=10)
         await self.view.dock(self.body, edge="top")
 
-        await self.bind("r", "update_messages", "Refresh messages")
-        await self.bind("s", "toggle_sidebar", "Toggle sidebar")
-        await self.bind("q", "quit", "Quit")
+        await self.bind("r", "update_messages", "🔄")
+        await self.bind("s", "toggle_sidebar", "🖼")
+        await self.bind("q", "quit", "🚪")
 
     async def on_message(self, message) -> None:
         """ Handle messages """
