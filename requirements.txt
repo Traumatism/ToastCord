@@ -1,3 +1,4 @@
+requests
 textual
 rich
 aiohttp
