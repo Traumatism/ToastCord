@@ -43,9 +43,9 @@ class MainWindow(App):
         await self.view.dock(self.input, edge="bottom", size=10)
         await self.view.dock(self.body, edge="top")
 
-        await self.bind("r", "update_messages", "🔄")
-        await self.bind("s", "toggle_sidebar", "🖼")
-        await self.bind("q", "quit", "🚪")
+        await self.bind("r", "update_messages", "Update messages")
+        await self.bind("s", "toggle_sidebar", "Toggle sidebar")
+        await self.bind("q", "quit", "Quit")
 
     async def on_message(self, message) -> None:
         """ Handle messages """

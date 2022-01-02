@@ -11,6 +11,7 @@ from toastcord.utils.message import render_message
 class MessagesBox(ScrollView):
 
     async def render(self):
+
         if client.selected_channel is not None:
 
             columns = Columns(
