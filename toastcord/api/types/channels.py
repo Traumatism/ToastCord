@@ -79,6 +79,7 @@ class Channel(DiscordObject):
 class MessageChannel(Channel):
     """ A message channel """
     recipient: User
+    last_message_id: int
 
 
 @dataclass

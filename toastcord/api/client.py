@@ -55,10 +55,13 @@ class Client:
                 discriminator=channel["recipients"][0]["discriminator"]
             )
 
+            last_message_id = channel["last_message_id"] or "0"
+
             yield MessageChannel(
                 id=channel["id"],
                 recipient=user,
-                messages=[]
+                messages=[],
+                last_message_id=int(last_message_id)
             )
 
     @property
@@ -77,10 +80,13 @@ class Client:
                 discriminator=channel["recipients"][0]["discriminator"]
             )
 
+            last_message_id = channel["last_message_id"] or "0"
+
             yield MessageChannel(
                 id=channel["id"],
                 recipient=user,
-                messages=[]
+                messages=[],
+                last_message_id=int(last_message_id)
             )
 
     @property

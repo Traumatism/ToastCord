@@ -73,7 +73,16 @@ class Sidebar(TreeControl):
         await self.root.add("Guilds", data=2)
         await self.root.add("Manage friends", data=3)
 
+        _channels = {}
+
         async for direct_message in toastcord.client.channels_async():
+            _channels[direct_message.last_message_id] = direct_message
+
+        _ids = reversed(sorted(_channels.keys()))
+
+        for x in _ids:
+            direct_message = _channels[x]
+
             await self.root.children[0].add(
                 direct_message.recipient.username, data=direct_message
             )
