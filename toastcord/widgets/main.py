@@ -3,7 +3,6 @@ from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN
 from toastcord.api.types.toasty.message import ToastyMessage
-from toastcord.utils.panel import get_panel
 
 from toastcord.widgets.input import Input
 from toastcord.widgets.footer import Footer
@@ -73,13 +72,5 @@ class MainWindow(App):
         """ Handle a click event """
         if not isinstance(message.target, (Channel, Guild)):
             return
-
-        if isinstance(message.target, Guild):
-            panel = get_panel()
-            panel.renderable = "Select a channel to start chatting"
-
-            await self.body.update(panel)
-
-            return self.refresh()
 
         await self.body.render()

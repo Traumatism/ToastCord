@@ -1,5 +1,3 @@
-import rich.repr
-
 from typing import Union
 
 from textual.message import Message, MessageTarget
@@ -9,7 +7,6 @@ from toastcord.api.types.toasty.message import ToastyMessage
 from toastcord.api.types.channels import Channel, GuildChannel, MessageChannel
 
 
-@rich.repr.auto
 class ToastyMessage(Message, bubble=True):
     """ Handle messages from Toasty"""
 
@@ -18,7 +15,6 @@ class ToastyMessage(Message, bubble=True):
         super().__init__(sender)
 
 
-@rich.repr.auto
 class Click(Message, bubble=True):
     """ Handle click """
 
@@ -30,7 +26,6 @@ class Click(Message, bubble=True):
         super().__init__(sender)
 
 
-@rich.repr.auto
 class Key(Message, bubble=True):
     """ Handle key press """
 
@@ -39,7 +34,6 @@ class Key(Message, bubble=True):
         super().__init__(sender)
 
 
-@rich.repr.auto
 class ChannelChanged(Message, bubble=True):
     """ Handle channel changing """
 
@@ -47,7 +41,6 @@ class ChannelChanged(Message, bubble=True):
         super().__init__(sender)
 
 
-@rich.repr.auto
 class MessageSent(Message, bubble=True):
     """ Handle message sending """
 

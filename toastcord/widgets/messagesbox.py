@@ -6,6 +6,7 @@ from textual.widgets import ScrollView
 
 from toastcord import client
 from toastcord.utils.message import render_message
+from toastcord.api.types.toasty.message import ToastyMessage
 
 
 class MessagesBox(ScrollView):
@@ -29,4 +30,8 @@ class MessagesBox(ScrollView):
             return
 
         async for message in client.selected_channel.load_messages():
+            if isinstance(message, ToastyMessage):
+                yield message.render()
+                continue
+
             yield render_message(message)
