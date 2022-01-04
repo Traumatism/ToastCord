@@ -22,13 +22,6 @@ class MessagesBox(ScrollView):
 
         return self.layout
 
-    # async def on_message(self, message: Message) -> None:
-    #     if isinstance(message, ChannelEscape):
-    #         client.selected_channel = None
-    #         self.layout.reset()
-    #         self.reset_check_layout()
-    #         await self.render()
-
     async def parse_messages(self) -> AsyncIterable[Panel]:
         """ Parse the messages in the channel """
         if client.selected_guild is not None:

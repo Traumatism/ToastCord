@@ -26,7 +26,7 @@ class UserInput:
 
     @property
     def prompt(self) -> str:
-        return str(self) + " [bright_black blink]|[/bright_black blink]"
+        return str(self) + "[bright_black blink]|[/bright_black blink]"
 
     def flush(self) -> None:
         """ Flush the user input """
@@ -112,9 +112,6 @@ class Input(Widget):
         elif key == "ctrl+h":
             self.user_input.remove_chr()
 
-        elif key == "escape":
-            pass
-
         elif key == "enter":
             await toastcord.client.selected_channel.send_message(
                 str(self.user_input)
@@ -123,7 +120,9 @@ class Input(Widget):
             self.user_input.flush()
 
             await self.emit(MessageSent(self))
+
         else:
             self.user_input.add_chr(key)
 
+        self.refresh()
         self.refresh(layout=True)

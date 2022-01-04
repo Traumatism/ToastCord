@@ -13,7 +13,6 @@ full_url = (
 HEADERS = {
     "Authorization": toastcord.TOKEN,
     "User-Agent": toastcord.USER_AGENT,
-    "Content-Type": "application/json"
 }
 
 API_BACKEND = (
@@ -38,7 +37,7 @@ class HTTPClient:
     def post(endpoint: str, data: Dict = {}, params: Dict = {}) -> Dict:
         """ Post data to the API """
         response = requests.post(
-            API_BACKEND + endpoint, headers=HEADERS, data=data,  params=params
+            API_BACKEND + endpoint, headers=HEADERS, data=data, params=params
         )
 
         return response.json()
@@ -60,15 +59,14 @@ class AsyncHTTPClient:
 
     @staticmethod
     async def post(
-        endpoint: str, data: Dict = {}, params: Dict = {}
+        endpoint: str, data: Dict = None, params: Dict = None
     ) -> Dict:
         """ Post data to the API """
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 API_BACKEND + endpoint,
                 headers=HEADERS,
-                params=params,
-                data=data
+                params=params or {},
+                data=data or {}
             ) as response:
                 return await response.json()
-

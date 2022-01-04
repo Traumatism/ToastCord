@@ -27,9 +27,8 @@ class Channel(DiscordObject):
 
     async def send_message(self, message: str):
         """ Send a message to the user """
-
         await AsyncHTTPClient.post(
-            f"/channels/{self.id}/messages", data={"content": message}
+            f"/channels/{self.id}/messages", data={"content": "bb"}
         )
 
     async def load_messages(
