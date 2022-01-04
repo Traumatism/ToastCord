@@ -26,16 +26,19 @@ class UserInput:
 
     @property
     def prompt(self) -> str:
-        return (
-            str(self)
-            + " [red]<[/red] [bright_black]("
-            f"{len(self.__user_input)}/{self.max}"
-            ")[/bright_black]"
-        )
+        return str(self) + " [bright_black blink]|[/bright_black blink]"
 
     def flush(self) -> None:
         """ Flush the user input """
         self.__user_input = ""
+
+    def move_left(self) -> None:
+        """ Move the cursor left """
+        self.cursor_pos -= 1
+
+    def move_right(self) -> None:
+        """ Move the cursor right """
+        self.cursor_pos += 1
 
     def add_chr(self, v: str) -> None:
         """ Add a character to the user input """
@@ -63,11 +66,12 @@ class Input(Widget):
         self.user_input: UserInput = UserInput()
 
     def render(self) -> RenderableType:
+
         if toastcord.client.selected_channel is None:
             return ""
 
         panel = get_panel()
-        panel.border_style = "#a84599"
+        panel.border_style = "bright_black"
 
         if isinstance(toastcord.client.selected_channel, GuildChannel):
             panel.title = (
@@ -78,10 +82,9 @@ class Input(Widget):
 
         if isinstance(toastcord.client.selected_channel, MessageChannel):
             panel.title = (
-                "[bright_black]"
+                "[cyan]"
                 f"@ {toastcord.client.selected_channel.recipient} "
-                f"({toastcord.client.selected_channel.recipient.id})"
-                "[/bright_black]"
+                "[/cyan]"
             )
 
         panel.title_align = "left"
@@ -108,6 +111,9 @@ class Input(Widget):
 
         elif key == "ctrl+h":
             self.user_input.remove_chr()
+
+        elif key == "escape":
+            pass
 
         elif key == "enter":
             await toastcord.client.selected_channel.send_message(
