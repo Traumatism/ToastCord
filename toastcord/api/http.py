@@ -1,20 +1,20 @@
+import toastcord
 import requests
 import aiohttp
 
 from typing import Dict
 
-import toastcord
-
-
-HEADERS = {
-    "Authorization": toastcord.TOKEN,
-    "User-Agent": toastcord.USER_AGENT
-}
 
 full_url = (
     toastcord.API_BACKEND
     if not toastcord.API_BACKEND.endswith('/') else toastcord.API_BACKEND[:-1]
 )
+
+HEADERS = {
+    "Authorization": toastcord.TOKEN,
+    "User-Agent": toastcord.USER_AGENT,
+    "Content-Type": "application/json"
+}
 
 API_BACKEND = (
     "%(backend)s/%(version)s"

@@ -12,7 +12,10 @@ class Client:
     """ A minimalist Discord API wrapper """
 
     def __init__(self, token: str = toastcord.TOKEN) -> None:
+
         self.selected_channel: Union[Channel, None] = None
+        self.selected_guild: Union[Guild, None] = None
+
         self.token = token
 
     def initalize(self):

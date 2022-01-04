@@ -99,6 +99,8 @@ class Sidebar(TreeControl):
             return self.refresh()
 
         if isinstance(message.node.data, Guild):
+            toastcord.client.selected_guild = message.node.data
+
             ids = {node.data.id for node in message.node.children}
 
             async for channel in message.node.data.load_channels():

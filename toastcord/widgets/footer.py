@@ -1,4 +1,5 @@
 from textual.widgets import Footer as _Footer
+
 from rich.text import Text
 
 

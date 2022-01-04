@@ -6,6 +6,8 @@ from rich.console import RenderableType
 from typing import Union
 
 from textual.widget import Widget
+from textual.events import Key
+
 
 from toastcord.utils.panel import get_panel
 from toastcord.utils.messages import MessageSent
@@ -93,10 +95,10 @@ class Input(Widget):
     async def on_event(self, event) -> None:
         self.refresh()
 
-        try:
-            key = event.key
-        except AttributeError:
+        if not isinstance(event, Key):
             return
+
+        key = event.key
 
         if toastcord.client.selected_channel is None:
             return
