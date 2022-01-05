@@ -55,8 +55,6 @@ class AsyncHTTPClient:
                 headers=HEADERS,
                 params=params
             ) as response:
-                with open("a.log", "w") as f:
-                    f.write(await response.text())
                 return await response.json()
 
     @staticmethod
