@@ -24,8 +24,6 @@ class MessagesBox(ScrollView):
 
     async def parse_messages(self) -> AsyncIterable[Panel]:
         """ Parse the messages in the channel """
-        if client.selected_guild is not None:
-            return  # TODO: Guild informations
 
         if client.selected_channel is None:
             return  # ???

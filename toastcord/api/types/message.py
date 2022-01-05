@@ -31,11 +31,12 @@ class Message(DiscordObject):
             self.content + "\n" + (" " * os.get_terminal_size().columns)
         )
 
-        panel.title = title
-        panel.title_align = "left"
         panel.border_style = (
             "blue" if self.author == toastcord.client.user else "cyan"
         )
-        panel.expand = True
+
+        panel.title = title
+        panel.highlight = False
+        panel.title_align = "left"
 
         return panel
