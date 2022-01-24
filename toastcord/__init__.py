@@ -1,5 +1,3 @@
-# fuck pep8
-
 import argparse
 
 VERSION = "1.0.0"
@@ -18,7 +16,7 @@ http_options = parser.add_argument_group("HTTP Options")
 
 http_options.add_argument(
     "--user-agent",
-    default=f"toastcord/1",
+    default="toastcord/1.0.0",
     help="User-Agent header",
     dest="user_agent",
     metavar="<value>"
@@ -49,9 +47,9 @@ API_BACKEND = arguments.api_backend
 USER_AGENT = arguments.user_agent
 TOKEN = arguments.token
 
-from .api.client import Client
+from toastcord.api.client import Client
 
-client = Client()
+client = Client(TOKEN)
 
 WELCOME_SCREEN = """[blue][bold]
  ╔╦╗╔═╗╔═╗╔═╗╔╦╗ [white]┌─┐┌─┐┬─┐┌┬┐[/white]

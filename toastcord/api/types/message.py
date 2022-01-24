@@ -1,9 +1,7 @@
 import toastcord
-import os
 
 from dataclasses import dataclass
 
-from toastcord.utils.panel import get_panel
 from toastcord.api.types import DiscordObject
 from toastcord.api.types.user import User
 
@@ -19,24 +17,14 @@ class Message(DiscordObject):
     def render(self):
         """ Render the message """
 
-        title = (
-            f"[bright_black][bold][green]{self.author.username}[/green][/bold]"
-            f" [italic]on {self.date} at {self.timestamp}"
-            "[/italic][/bright_black]"
-        )
+        user_color = "blue" if self.author == toastcord.client.user else "cyan"
 
-        panel = get_panel()
+        message = f"[{user_color} underline]"
+        message += self.author.username
+        message += f"[/{user_color} underline] "
+        message += "[bright_black italic]"
+        message += f"({self.date} at {self.timestamp})"
+        message += "[/bright_black italic]"
+        message += f"\n{self.content}\n"
 
-        panel.renderable = (
-            self.content + "\n" + (" " * os.get_terminal_size().columns)
-        )
-
-        panel.border_style = (
-            "blue" if self.author == toastcord.client.user else "cyan"
-        )
-
-        panel.title = title
-        panel.highlight = False
-        panel.title_align = "left"
-
-        return panel
+        return message

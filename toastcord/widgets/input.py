@@ -22,7 +22,7 @@ class UserInput:
         self.max = 500
 
     def __str__(self) -> str:
-        return self.__user_input
+        return self.__user_input or "Write here..."
 
     @property
     def prompt(self) -> str:

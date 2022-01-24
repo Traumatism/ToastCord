@@ -1,8 +1,7 @@
-from rich.panel import Panel
+from rich.console import RenderableType
 from rich.columns import Columns
 
 from typing import AsyncIterable
-
 from textual.widgets import ScrollView
 
 from toastcord import client
@@ -22,11 +21,11 @@ class MessagesBox(ScrollView):
 
         return self.layout
 
-    async def parse_messages(self) -> AsyncIterable[Panel]:
+    async def parse_messages(self) -> AsyncIterable[RenderableType]:
         """ Parse the messages in the channel """
 
         if client.selected_channel is None:
-            return  # ???
+            return
 
         async for message in client.selected_channel.load_messages():
             yield message.render()
