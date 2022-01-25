@@ -48,10 +48,6 @@ class UserInput:
 
         return escaped
 
-    @property
-    def prompt(self) -> str:
-        return self.user_input
-
     def flush(self) -> None:
         """ Flush the user input """
         self.__user_input = ""
