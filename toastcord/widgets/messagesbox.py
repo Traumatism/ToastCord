@@ -1,5 +1,4 @@
 from rich.console import RenderableType
-from rich.columns import Columns
 
 from typing import AsyncIterable
 from textual.widgets import ScrollView
@@ -8,16 +7,16 @@ from toastcord import client
 
 
 class MessagesBox(ScrollView):
-
     async def render(self):
 
         if client.selected_channel is not None:
-            columns = Columns(
-                [panel async for panel in self.parse_messages()],
-                align="left"
-            )
 
-            await self.update(columns)
+            msgs = []
+
+            async for message in self.parse_messages():
+                msgs.append(message)
+
+            await self.update("\n\n".join(msgs))
 
         return self.layout
 

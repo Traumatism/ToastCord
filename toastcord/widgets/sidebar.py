@@ -71,7 +71,7 @@ class Sidebar(TreeControl):
     async def on_mount(self) -> None:
         await self.root.add("Direct messages ", data=1)
         await self.root.add("Guilds", data=2)
-        await self.root.add("Manage friends", data=3)
+        # await self.root.add("", data=3)
 
         _channels = {}
 

@@ -1,6 +1,7 @@
 import os
 import toastcord
 
+from rich.markup import escape
 from rich.console import RenderableType
 
 from typing import Union
@@ -21,12 +22,33 @@ class UserInput:
         self.cursor_pos = 0
         self.max = 500
 
-    def __str__(self) -> str:
-        return self.__user_input or "Write here..."
+    @property
+    def user_input(self) -> str:
+        """ Get the user input """
+        escaped = escape(self.__user_input)
+
+        if len(escaped) == self.cursor_pos:
+            escaped = (
+                escaped
+                + "[black on white]"
+                + " "
+                + "[/black on white]"
+            )
+
+        elif self.cursor_pos < len(escaped):
+            escaped = (
+                escaped[:self.cursor_pos]
+                + "[black on white]"
+                + escaped[self.cursor_pos:self.cursor_pos+1]
+                + "[/black on white]"
+                + escaped[self.cursor_pos+1:]
+            )
+
+        return escaped
 
     @property
     def prompt(self) -> str:
-        return str(self) + "[bright_black blink]|[/bright_black blink]"
+        return self.user_input
 
     def flush(self) -> None:
         """ Flush the user input """
@@ -34,11 +56,11 @@ class UserInput:
 
     def move_left(self) -> None:
         """ Move the cursor left """
-        self.cursor_pos -= 1
+        self.cursor_pos -= 1 if self.cursor_pos > 0 else 0
 
     def move_right(self) -> None:
         """ Move the cursor right """
-        self.cursor_pos += 1
+        self.cursor_pos += 1 if self.cursor_pos < len(self.__user_input) else 0
 
     def add_chr(self, v: str) -> None:
         """ Add a character to the user input """
@@ -46,12 +68,21 @@ class UserInput:
             return
 
         self.cursor_pos += len(v)
-        self.__user_input += v
+
+        self.__user_input = (
+            self.__user_input[:self.cursor_pos - 1]
+            + v
+            + self.__user_input[self.cursor_pos + 1:]
+        )
 
     def remove_chr(self, x=1) -> None:
         """ Remove a character from the user input """
-        self.cursor_pos -= x
-        self.__user_input = self.__user_input[:-x]
+        self.cursor_pos -= x if self.cursor_pos > 0 else 0
+
+        self.__user_input = (
+            self.__user_input[:self.cursor_pos]
+            + self.__user_input[self.cursor_pos + x:]
+        )
 
     def remove_word(self, x=1) -> None:
         """ Remove a word from the user input """
@@ -63,7 +94,14 @@ class Input(Widget):
     def __init__(self, name: Union[str, None] = None) -> None:
         super().__init__(name=name)
 
+        self.panel_colors = ("bright_black", "white")
+        self.panel_color = 0
+
         self.user_input: UserInput = UserInput()
+
+    def on_click(self, event) -> None:
+        self.panel_color = int(not bool(self.panel_color))
+        self.refresh()
 
     def render(self) -> RenderableType:
 
@@ -71,7 +109,7 @@ class Input(Widget):
             return ""
 
         panel = get_panel()
-        panel.border_style = "bright_black"
+        panel.border_style = self.panel_colors[self.panel_color]
 
         if isinstance(toastcord.client.selected_channel, GuildChannel):
             panel.title = (
@@ -90,7 +128,8 @@ class Input(Widget):
         panel.title_align = "left"
 
         panel.renderable = (
-            self.user_input.prompt + (" " * os.get_terminal_size().columns)
+            self.user_input.user_input
+            + (" " * os.get_terminal_size().columns)
         )
 
         return panel
@@ -106,7 +145,13 @@ class Input(Widget):
         if toastcord.client.selected_channel is None:
             return
 
-        if key == "ctrl+w":
+        if key == "left":
+            self.user_input.move_left()
+
+        elif key == "right":
+            self.user_input.move_right()
+
+        elif key == "ctrl+w":
             self.user_input.remove_word()
 
         elif key == "ctrl+h":

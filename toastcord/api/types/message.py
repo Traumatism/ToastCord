@@ -1,5 +1,8 @@
 import toastcord
 
+
+from rich.markup import escape
+
 from dataclasses import dataclass
 
 from toastcord.api.types import DiscordObject
@@ -13,6 +16,10 @@ class Message(DiscordObject):
     content: str
     timestamp: str
     date: str
+
+    @property
+    def _content(self) -> str:
+        return escape(self.content)
 
     def render(self):
         """ Render the message """
