@@ -1,7 +1,3 @@
-import os
-
-from toastcord.utils.panel import get_panel
-
 from dataclasses import dataclass
 
 
@@ -11,19 +7,13 @@ class ToastyMessage:
     content: str
 
     def render(self):
-        """ Render message """
+        """ Render the message """
 
-        title = '[bright_black][bold][green]Toasty[/green][/bold]'
+        user_color = "red"
 
-        panel = get_panel()
+        message = f"[{user_color} underline]"
+        message += "Toasty"
+        message += f"[/{user_color} underline] "
+        message += f"\n{self.content}\n"
 
-        panel.renderable = (
-            self.content + "\n" + (" " * os.get_terminal_size().columns)
-        )
-
-        panel.title = title
-        panel.title_align = "left"
-        panel.border_style = "red"
-        panel.expand = True
-
-        return panel
+        return message
