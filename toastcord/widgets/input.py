@@ -22,10 +22,12 @@ class UserInput:
         self.cursor_pos = 0
         self.max = 500
 
-    @property
-    def user_input(self) -> str:
+    def user_input(self, cursor=True) -> str:
         """ Get the user input """
         escaped = escape(self.__user_input)
+
+        if cursor is False:
+            return escaped
 
         if len(escaped) == self.cursor_pos:
             escaped = (
@@ -128,7 +130,7 @@ class Input(Widget):
         panel.title_align = "left"
 
         panel.renderable = (
-            self.user_input.user_input
+            self.user_input.user_input()
             + (" " * os.get_terminal_size().columns)
         )
 
@@ -159,7 +161,7 @@ class Input(Widget):
 
         elif key == "enter":
             await toastcord.client.selected_channel.send_message(
-                str(self.user_input)
+                self.user_input.user_input(cursor=False)
             )
 
             self.user_input.flush()
