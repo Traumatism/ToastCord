@@ -1,9 +1,11 @@
 from rich.console import RenderableType
 
 from typing import AsyncIterable
+
 from textual.widgets import ScrollView
 
 from toastcord import client
+from toastcord.utils.panel import get_panel
 
 
 class MessagesBox(ScrollView):
@@ -17,7 +19,11 @@ class MessagesBox(ScrollView):
             async for message in self.parse_messages():
                 msgs.append(message)
 
-            await self.update("\n\n".join(msgs))
+            panel = get_panel()
+            panel.renderable = "\n\n".join(msgs)
+            panel.highlight = False
+
+            await self.update(panel)
 
         return self.layout
 

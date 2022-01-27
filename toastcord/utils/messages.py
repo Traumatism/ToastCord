@@ -41,8 +41,8 @@ class ChannelChanged(Message, bubble=True):
         super().__init__(sender)
 
 
-class MessageSent(Message, bubble=True):
-    """ Handle message sending """
+class MessageReload(Message, bubble=True):
+    """ Handle message reload """
 
     def __init__(self, sender: MessageTarget) -> None:
         super().__init__(sender)

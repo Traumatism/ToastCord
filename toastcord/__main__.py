@@ -2,11 +2,10 @@ import toastcord
 
 from rich.console import Console
 
-from toastcord.utils.highlighter import theme
 from toastcord.widgets.main import MainWindow
 
 if __name__ == "__main__":
-    console = Console(theme=theme)
+    console = Console()
 
     console.log("Initializing ToastCord client...")
 

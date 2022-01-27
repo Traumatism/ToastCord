@@ -78,9 +78,12 @@ class Sidebar(TreeControl):
         async for direct_message in toastcord.client.channels_async():
             _channels[direct_message.last_message_id] = direct_message
 
-        _ids = reversed(sorted(_channels.keys()))
+        _ids = map(str, reversed(sorted(map(int, _channels.keys()))))
 
         for x in _ids:
+            if x == "0":
+                continue
+
             direct_message = _channels[x]
 
             await self.root.children[0].add(

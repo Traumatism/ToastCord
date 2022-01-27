@@ -10,7 +10,7 @@ from toastcord.widgets.sidebar import Sidebar
 from toastcord.widgets.messagesbox import MessagesBox
 
 from toastcord.utils.messages import (
-    ChannelChanged, Click, MessageSent
+    ChannelChanged, Click, MessageReload
 )
 
 from toastcord.api.types.guild import Guild
@@ -48,7 +48,7 @@ class MainWindow(App):
 
     async def on_message(self, message) -> None:
         """ Handle messages """
-        if isinstance(message, MessageSent):
+        if isinstance(message, MessageReload):
             await self.body.render()
 
         if isinstance(message, Click):

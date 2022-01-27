@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from typing import AsyncIterable, List, Union
 
-from toastcord.api.types import DiscordObject
+from toastcord.api.types import DiscordID, DiscordObject
 from toastcord.api.types.user import User
 from toastcord.api.types.message import Message
 from toastcord.api.types.toasty.message import ToastyMessage
@@ -77,7 +77,7 @@ class Channel(DiscordObject):
 class MessageChannel(Channel):
     """ A message channel """
     recipient: User
-    last_message_id: int
+    last_message_id: DiscordID
 
 
 @dataclass

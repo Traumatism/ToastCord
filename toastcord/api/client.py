@@ -1,6 +1,7 @@
 from typing import AsyncIterable, Iterable, Union
 
 from toastcord.api.http import HTTPClient, AsyncHTTPClient
+from toastcord.api.types import DiscordID
 from toastcord.api.types.user import User
 from toastcord.api.types.guild import Guild
 from toastcord.api.types.channels import MessageChannel, Channel
@@ -56,13 +57,16 @@ class Client:
                 discriminator=channel["recipients"][0]["discriminator"]
             )
 
-            last_message_id = channel["last_message_id"] or "0"
+            last_message_id = (
+                channel["last_message_id"]
+                or DiscordID(0)
+            )
 
             yield MessageChannel(
                 id=channel["id"],
                 recipient=user,
                 messages=[],
-                last_message_id=int(last_message_id)
+                last_message_id=last_message_id
             )
 
     @property
@@ -81,13 +85,16 @@ class Client:
                 discriminator=channel["recipients"][0]["discriminator"]
             )
 
-            last_message_id = channel["last_message_id"] or "0"
+            last_message_id = (
+                channel["last_message_id"]
+                or DiscordID(0)
+            )
 
             yield MessageChannel(
                 id=channel["id"],
                 recipient=user,
                 messages=[],
-                last_message_id=int(last_message_id)
+                last_message_id=last_message_id
             )
 
     @property

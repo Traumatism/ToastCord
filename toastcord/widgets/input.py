@@ -11,7 +11,7 @@ from textual.widget import Widget
 from textual.events import Key
 
 from toastcord.utils.panel import get_panel
-from toastcord.utils.messages import MessageSent
+from toastcord.utils.messages import MessageReload
 from toastcord.api.types.channels import GuildChannel, MessageChannel
 
 
@@ -24,24 +24,24 @@ class UserInput:
 
     def user_input(self, cursor=True) -> str:
         """ Get the user input """
-        escaped = escape(self.__user_input)
+        # escaped = escape(self.__user_input)
 
-        if cursor is False:
-            return escaped
+        # if cursor is False:
+        #     return escaped
 
-        if len(escaped) == self.cursor_pos:
-            escaped += "[black on white] [/black on white]"
+        # if len(escaped) == self.cursor_pos:
+        #     escaped += "[black on white] [/black on white]"
 
-        elif self.cursor_pos < len(escaped):
-            escaped = (
-                escaped[:self.cursor_pos]
-                + "[black on white]"
-                + escaped[self.cursor_pos:self.cursor_pos+1]
-                + "[/black on white]"
-                + escaped[self.cursor_pos+1:]
-            )
+        # elif self.cursor_pos < len(escaped):
+        #     escaped = (
+        #         escaped[:self.cursor_pos]
+        #         + "[black on white]"
+        #         + escaped[self.cursor_pos:self.cursor_pos+1]
+        #         + "[/black on white]"
+        #         + escaped[self.cursor_pos+1:]
+        #     )
 
-        return escaped
+        return escape(self.__user_input)
 
     def flush(self) -> None:
         """ Flush the user input """
@@ -98,6 +98,7 @@ class Input(Widget):
             return ""
 
         panel = get_panel()
+        panel.highlight = False
         panel.border_style = self.panel_colors[self.panel_color]
 
         if isinstance(toastcord.client.selected_channel, GuildChannel):
@@ -171,7 +172,7 @@ class Input(Widget):
 
             self.user_input.flush()
 
-            await self.emit(MessageSent(self))
+            await self.emit(MessageReload(self))
 
         else:
             self.user_input.add_chr(key)
