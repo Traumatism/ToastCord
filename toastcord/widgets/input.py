@@ -30,12 +30,7 @@ class UserInput:
             return escaped
 
         if len(escaped) == self.cursor_pos:
-            escaped = (
-                escaped
-                + "[black on white]"
-                + " "
-                + "[/black on white]"
-            )
+            escaped += "[black on white] [/black on white]"
 
         elif self.cursor_pos < len(escaped):
             escaped = (
@@ -97,10 +92,6 @@ class Input(Widget):
 
         self.user_input: UserInput = UserInput()
 
-    def on_click(self, event) -> None:
-        self.panel_color = int(not bool(self.panel_color))
-        self.refresh()
-
     def render(self) -> RenderableType:
 
         if toastcord.client.selected_channel is None:
@@ -145,7 +136,8 @@ class Input(Widget):
 
         VALID_KEYS = {
             "left", "right",
-            "ctrl+w", "ctrl+h"
+            "ctrl+w", "ctrl+h",
+            "enter"
         }
 
         ALL_KEYS = list(map(lambda x: x.value, list(iter(Keys))))
