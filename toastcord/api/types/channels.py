@@ -10,7 +10,6 @@ from toastcord.api.types import DiscordObject
 from toastcord.api.types.user import User
 from toastcord.api.types.message import Message
 from toastcord.api.types.toasty.message import ToastyMessage
-
 from toastcord.api.http import AsyncHTTPClient
 
 PATTERN = r"(?P<date>\d{4}\-\d{2}\-\d{2})T(?P<hour>\d{2}\:\d{2}\:\d{2})"

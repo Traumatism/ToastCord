@@ -6,9 +6,9 @@ from rich.console import RenderableType
 
 from typing import Union
 
+from textual.keys import Keys
 from textual.widget import Widget
 from textual.events import Key
-
 
 from toastcord.utils.panel import get_panel
 from toastcord.utils.messages import MessageSent
@@ -141,6 +141,23 @@ class Input(Widget):
         key = event.key
 
         if toastcord.client.selected_channel is None:
+            return
+
+        VALID_KEYS = {
+            "left", "right",
+            "ctrl+w", "ctrl+h"
+        }
+
+        ALL_KEYS = list(map(lambda x: x.value, list(iter(Keys))))
+
+        # for _key in ALL_KEYS:
+        #     if (
+        #         key == _key
+        #         and key not in VALID_KEYS
+        #     ):
+        #         return
+
+        if key not in VALID_KEYS and key in ALL_KEYS:
             return
 
         if key == "left":

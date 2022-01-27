@@ -7,8 +7,9 @@ from toastcord import client
 
 
 class MessagesBox(ScrollView):
-    async def render(self):
+    """ Box where the messages will be displayed """
 
+    async def render(self):
         if client.selected_channel is not None:
 
             msgs = []
