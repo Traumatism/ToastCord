@@ -7,8 +7,9 @@ from rich.console import RenderableType
 from typing import Union
 
 from textual.keys import Keys
+from textual.reactive import Reactive
 from textual.widget import Widget
-from textual.events import Key
+from textual.events import Key, Focus, Blur
 
 from toastcord.utils.panel import get_panel
 from toastcord.utils.messages import MessageReload
@@ -87,10 +88,16 @@ class Input(Widget):
     def __init__(self, name: Union[str, None] = None) -> None:
         super().__init__(name=name)
 
-        self.panel_colors = ("bright_black", "white")
-        self.panel_color = 0
-
         self.user_input: UserInput = UserInput()
+
+    # that damn shit isn't working :<
+    has_focus: Reactive[bool] = Reactive(False)
+
+    async def on_focus(self, event: Focus) -> None:
+        self.has_focus = True
+
+    async def on_blur(self, event: Blur) -> None:
+        self.has_focus = False
 
     def render(self) -> RenderableType:
 
@@ -99,7 +106,9 @@ class Input(Widget):
 
         panel = get_panel()
         panel.highlight = False
-        panel.border_style = self.panel_colors[self.panel_color]
+        panel.border_style = (
+            "white" if self.has_focus else "bright_black"
+        )
 
         if isinstance(toastcord.client.selected_channel, GuildChannel):
             panel.title = (

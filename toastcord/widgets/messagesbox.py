@@ -20,6 +20,7 @@ class MessagesBox(ScrollView):
                 msgs.append(message)
 
             panel = get_panel()
+
             panel.renderable = "\n\n".join(msgs)
             panel.highlight = False
 

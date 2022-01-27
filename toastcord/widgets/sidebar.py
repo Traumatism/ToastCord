@@ -1,7 +1,6 @@
 import toastcord
 
 from textual.widgets import TreeClick, TreeControl, TreeNode
-from textual.reactive import Reactive
 
 from rich.text import Text
 from rich.console import RenderableType
@@ -19,17 +18,6 @@ class Sidebar(TreeControl):
         super().__init__(LOGO, name=name, data=0)
 
         self.root.tree.guide_style = "black"
-
-    has_focus: Reactive[bool] = Reactive(False)
-
-    def render(self) -> RenderableType:
-        return self._tree
-
-    def on_focus(self) -> None:
-        self.has_focus = True
-
-    def on_blur(self) -> None:
-        self.has_focus = False
 
     def render_tree_label(
         self, node: TreeNode, is_cursor: bool, expanded: bool
@@ -71,7 +59,6 @@ class Sidebar(TreeControl):
     async def on_mount(self) -> None:
         await self.root.add("Direct messages ", data=1)
         await self.root.add("Guilds", data=2)
-        # await self.root.add("", data=3)
 
         _channels = {}
 
