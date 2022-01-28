@@ -93,12 +93,6 @@ class Input(Widget):
     # that damn shit isn't working :<
     has_focus: Reactive[bool] = Reactive(False)
 
-    async def on_focus(self, event: Focus) -> None:
-        self.has_focus = True
-
-    async def on_blur(self, event: Blur) -> None:
-        self.has_focus = False
-
     def render(self) -> RenderableType:
 
         if toastcord.client.selected_channel is None:
@@ -135,6 +129,14 @@ class Input(Widget):
 
     async def on_event(self, event) -> None:
         self.refresh()
+
+        if isinstance(event, Focus):
+            self.has_focus = True
+            self.refresh()
+
+        if isinstance(event, Blur):
+            self.has_focus = False
+            self.refresh()
 
         if not isinstance(event, Key):
             return
