@@ -1,6 +1,7 @@
-from typing import AsyncIterable, Iterable, Union
+from typing import AsyncIterable, Iterable, Optional
 
 from toastcord.api.http import HTTPClient, AsyncHTTPClient
+
 from toastcord.api.types import DiscordID
 from toastcord.api.types.user import User
 from toastcord.api.types.guild import Guild
@@ -12,8 +13,8 @@ class Client:
 
     def __init__(self, token: str) -> None:
 
-        self.selected_channel: Union[Channel, None] = None
-        self.selected_guild: Union[Guild, None] = None
+        self.selected_channel: Optional[Channel] = None
+        self.selected_guild: Optional[Guild] = None
 
         self.token = token
 

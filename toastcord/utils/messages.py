@@ -8,7 +8,7 @@ from toastcord.api.types.channels import Channel, GuildChannel, MessageChannel
 
 
 class ToastyMessage(Message, bubble=True):
-    """ Handle messages from Toasty"""
+    """ Handle messages from Toasty """
 
     def __init__(self, sender: MessageTarget, message: ToastyMessage) -> None:
         self.message = message

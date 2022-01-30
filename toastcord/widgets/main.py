@@ -2,19 +2,17 @@ from textual.app import App
 from textual.widgets import ScrollView
 
 from toastcord import WELCOME_SCREEN
-from toastcord.api.types.toasty.message import ToastyMessage
 
 from toastcord.widgets.input import Input
 from toastcord.widgets.footer import Footer
 from toastcord.widgets.sidebar import Sidebar
 from toastcord.widgets.messagesbox import MessagesBox
 
-from toastcord.utils.messages import (
-    ChannelChanged, Click, MessageReload
-)
+from toastcord.utils.messages import ChannelChanged, Click, MessageReload
 
 from toastcord.api.types.guild import Guild
 from toastcord.api.types.channels import Channel
+from toastcord.api.types.toasty.message import ToastyMessage
 
 
 class MainWindow(App):

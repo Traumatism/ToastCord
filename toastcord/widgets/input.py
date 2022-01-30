@@ -4,7 +4,7 @@ import toastcord
 from rich.markup import escape
 from rich.console import RenderableType
 
-from typing import Union
+from typing import Optional
 
 from textual.keys import Keys
 from textual.reactive import Reactive
@@ -85,7 +85,7 @@ class UserInput:
 
 class Input(Widget):
 
-    def __init__(self, name: Union[str, None] = None) -> None:
+    def __init__(self, name: Optional[str] = None) -> None:
         super().__init__(name=name)
 
         self.user_input: UserInput = UserInput()
