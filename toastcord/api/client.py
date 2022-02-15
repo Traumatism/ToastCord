@@ -1,7 +1,6 @@
-from typing import AsyncIterable, Iterable, Optional
+from typing import AsyncIterable, Optional, Generator
 
 from toastcord.api.http import HTTPClient, AsyncHTTPClient
-
 from toastcord.api.types import DiscordID
 from toastcord.api.types.user import User
 from toastcord.api.types.guild import Guild
@@ -12,13 +11,12 @@ class Client:
     """ A minimalist Discord API wrapper """
 
     def __init__(self, token: str) -> None:
-
         self.selected_channel: Optional[Channel] = None
         self.selected_guild: Optional[Guild] = None
-
         self.token = token
 
     def initalize(self):
+        """ Initialize the client """
         try:
             self.user = self.__user
         except KeyError:
@@ -36,7 +34,7 @@ class Client:
             )
 
     @property
-    def guilds(self) -> Iterable[Guild]:
+    def guilds(self) -> Generator[Guild, None, None]:
         """ Get all guilds """
         response = HTTPClient.get("/users/@me/guilds")
 
@@ -47,10 +45,7 @@ class Client:
         """ Get all channels asynchronously """
         response = await AsyncHTTPClient.get("/users/@me/channels")
 
-        for channel in response:
-
-            if len(channel["recipients"]) != 1:
-                continue
+        for channel in filter(lambda c: len(c["recipients"]) == 1, response):
 
             user = User(
                 id=channel["recipients"][0]["id"],
@@ -58,10 +53,7 @@ class Client:
                 discriminator=channel["recipients"][0]["discriminator"]
             )
 
-            last_message_id = (
-                channel["last_message_id"]
-                or DiscordID(0)
-            )
+            last_message_id = channel["last_message_id"] or DiscordID(0)
 
             yield MessageChannel(
                 id=channel["id"],
@@ -71,14 +63,11 @@ class Client:
             )
 
     @property
-    def channels(self) -> Iterable[MessageChannel]:
+    def channels(self) -> Generator[MessageChannel, None, None]:
         """ Get all channels """
         response = HTTPClient.get("/users/@me/channels")
 
-        for channel in response:
-
-            if len(channel["recipients"]) != 1:
-                continue
+        for channel in filter(lambda c: len(c["recipients"]) == 1, response):
 
             user = User(
                 id=channel["recipients"][0]["id"],

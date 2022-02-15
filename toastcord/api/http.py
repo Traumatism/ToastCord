@@ -2,10 +2,10 @@ import toastcord
 import requests
 import aiohttp
 
-from typing import Dict
+from typing import Dict, Optional
 
 
-full_url = (
+FULL_URL = (
     toastcord.API_BACKEND
     if not toastcord.API_BACKEND.endswith('/') else toastcord.API_BACKEND[:-1]
 )
@@ -16,8 +16,7 @@ HEADERS = {
 }
 
 API_BACKEND = (
-    "%(backend)s/%(version)s"
-    % {"version": toastcord.API_VERSION, "backend": full_url}
+    "%(url)s/%(version)s" % {"version": toastcord.API_VERSION, "url": FULL_URL}
 )
 
 
@@ -25,8 +24,12 @@ class HTTPClient:
     """ A minimalistic HTTP client for the Discord API """
 
     @staticmethod
-    def get(endpoint: str, params: Dict = {}) -> Dict:
+    def get(endpoint: str, params: Optional[Dict] = None) -> Dict:
         """ Get data from the API """
+
+        if params is None:
+            params = {}
+
         response = requests.get(
             API_BACKEND + endpoint, headers=HEADERS, params=params
         )
@@ -34,8 +37,13 @@ class HTTPClient:
         return response.json()
 
     @staticmethod
-    def post(endpoint: str, data: Dict = {}, params: Dict = {}) -> Dict:
+    def post(
+        endpoint: str,
+        data: Optional[Dict] = None,
+        params: Optional[Dict] = None
+    ) -> Dict:
         """ Post data to the API """
+
         response = requests.post(
             API_BACKEND + endpoint, headers=HEADERS, data=data, params=params
         )
@@ -47,8 +55,9 @@ class AsyncHTTPClient:
     """ Same as HTTPClient, but asynchronous """
 
     @staticmethod
-    async def get(endpoint: str, params: Dict = {}) -> Dict:
+    async def get(endpoint: str, params: Optional[Dict] = None) -> Dict:
         """ Get data from the API """
+
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 API_BACKEND + endpoint,
@@ -59,14 +68,18 @@ class AsyncHTTPClient:
 
     @staticmethod
     async def post(
-        endpoint: str, data: Dict = None, params: Dict = None
+        endpoint: str,
+        data: Optional[Dict] = None,
+        params: Optional[Dict] = None
     ) -> Dict:
         """ Post data to the API """
+
         async with aiohttp.ClientSession() as session:
+
             async with session.post(
                 API_BACKEND + endpoint,
                 headers=HEADERS,
-                params=params or {},
-                data=data or {}
+                params=params,
+                data=data
             ) as response:
                 return await response.json()

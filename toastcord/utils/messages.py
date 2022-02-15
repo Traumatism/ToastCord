@@ -37,12 +37,6 @@ class Key(Message, bubble=True):
 class ChannelChanged(Message, bubble=True):
     """ Handle channel changing """
 
-    def __init__(self, sender: MessageTarget) -> None:
-        super().__init__(sender)
-
 
 class MessageReload(Message, bubble=True):
     """ Handle message reload """
-
-    def __init__(self, sender: MessageTarget) -> None:
-        super().__init__(sender)

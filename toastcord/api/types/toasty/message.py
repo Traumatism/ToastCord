@@ -6,14 +6,6 @@ class ToastyMessage:
     """ A message from Toasty """
     content: str
 
-    def render(self):
+    def render(self) -> str:
         """ Render the message """
-
-        user_color = "red"
-
-        message = f"[{user_color} underline]"
-        message += "Toasty"
-        message += f"[/{user_color} underline] "
-        message += f"\n{self.content}\n"
-
-        return message
+        return f"[red underline]Toasty[/red underline]\n{self.content}\n"

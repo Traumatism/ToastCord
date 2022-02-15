@@ -2,7 +2,8 @@ import toastcord
 
 from rich.console import Console
 
-from toastcord.widgets.main import MainWindow
+from toastcord.widgets import MainWindow
+
 
 if __name__ == "__main__":
     console = Console()

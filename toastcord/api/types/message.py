@@ -1,6 +1,5 @@
 import toastcord
 
-
 from rich.markup import escape
 
 from dataclasses import dataclass
@@ -19,6 +18,7 @@ class Message(DiscordObject):
 
     @property
     def _content(self) -> str:
+        """ Get the escaped content of the message """
         return escape(self.content)
 
     def render(self):
@@ -26,12 +26,14 @@ class Message(DiscordObject):
 
         user_color = "blue" if self.author == toastcord.client.user else "cyan"
 
-        message = f"[{user_color} underline]"
-        message += self.author.username
-        message += f"[/{user_color} underline] "
-        message += "[bright_black italic]"
-        message += f"({self.date} at {self.timestamp})"
-        message += "[/bright_black italic]"
-        message += f"\n{self.content}\n"
+        message = (
+            f"[{user_color} underline]"
+            f"{self.author.username}"
+            f"[/{user_color} underline] "
+            "[bright_black italic]"
+            f"({self.date} at {self.timestamp})"
+            "[/bright_black italic]"
+            f"\n{self.content}\n"
+        )
 
         return message
